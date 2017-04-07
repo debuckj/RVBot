@@ -1,0 +1,109 @@
+﻿using Discord;
+using Discord.Commands;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using RVBot.Core;
+
+namespace RVBot.Modules
+{
+    public class RoleModule : ModuleBase
+    {
+        [Command("getrolesummary")]
+        [Alias("grs", "getroles", "getrole")]
+        [RequireContext(ContextType.Guild)]
+        [RequireUserPermission(GuildPermission.ManageRoles)]
+        [Summary("Shows how many users there are in all roles or in a specified role. ")]
+        public async Task GetRoleSummary([Remainder] string role = null)
+        {
+            await Log.LogMessage(Context);
+            var roleTable = await Role.GetRoleMembers(Context, role);
+            await Context.Channel.SendMessageSplitCodeblockAsync(roleTable);
+        }
+
+        [Command("getroleusers")]
+        [Alias("gru", "grm", "getrolemembers")]
+        [RequireContext(ContextType.Guild)]
+        [RequireUserPermission(GuildPermission.ManageRoles)]
+        [Summary("Lists the users in a specified role.")]
+        public async Task GetRoleUserSummary([Remainder] string role = null)
+        {
+            await Log.LogMessage(Context);
+            if (role == null) { await ReplyAsync("Please specify a role to query"); return; }
+            var userTable = await Role.GetRoleUsers(Context, role);
+            if (userTable == "ERROR_NOROLEFOUND") { await ReplyAsync("No role found with name " + role); return; }
+            await Context.Channel.SendMessageSplitCodeblockAsync(userTable);
+        }
+
+        [Command("getunregisteredusers")]
+        [Alias("guu")]
+        [RequireContext(ContextType.Guild)]
+        [RequireUserPermission(GuildPermission.ManageRoles)]
+        [Summary("Lists the users that have no roles assigned")]
+        public async Task GetUnregisteredUsersSummary([Remainder] string role = null)
+        {
+            await Log.LogMessage(Context);
+            var roleTable = await Role.GetUnregisteredUsers(Context, role);
+            if (roleTable != null) { await Context.Channel.SendMessageSplitCodeblockAsync(roleTable); }
+        }
+
+        [Command("getuserroles")]
+        [Alias("gur")]
+        [RequireContext(ContextType.Guild)]
+        [RequireUserPermission(GuildPermission.ManageRoles)]
+        [Summary("Lists the roles of a specified user.")]
+        public async Task GetUserRoleSummary([Remainder] string username = null)
+        {
+            await Log.LogMessage(Context);
+            if (username == null) { await ReplyAsync("Please specify a user to query"); return; }
+            var roleTable = await Role.GetUserRoles(Context, username);
+            //if (userTable == "ERROR_NOUSERFOUND") { await ReplyAsync("No user found with name " + username); return; }
+            await ReplyAsync(roleTable);
+        }
+
+        [Command("verify")]
+        [Alias("ver")]
+        [RequireContext(ContextType.Guild)]
+        //[RequireUserPermission(GuildPermission.ManageRoles)]
+        [Summary("Verifies a user as a member.")]
+        public async Task VerifyMember([Remainder] string username = null)
+        {
+            await Log.LogMessage(Context);
+            if (await Permissions.IsOfficer(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
+            if (username == null) { await ReplyAsync("Please specify a user to verify"); return; }
+            await Role.VerifyMember(Context, username);
+        }
+
+        [Command("assignrole")]
+        [Alias("ver")]
+        [RequireContext(ContextType.Guild)]
+        [RequireUserPermission(GuildPermission.ManageRoles)]
+        [Summary("Verifies a user as a member.")]
+        public async Task AssignRole(string rolename, [Remainder] string username = null)
+        {
+            await Log.LogMessage(Context);
+            if (await Permissions.IsServerStaff(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
+            if (rolename == null) { await ReplyAsync("Please specify a role"); return; }
+            if (username == null) { await ReplyAsync("Please specify a user"); return; }
+            await Role.AssignRole(Context, rolename, username);
+        }
+        [Command("revokerole")]
+        [Alias("ver")]
+        [RequireContext(ContextType.Guild)]
+        [RequireUserPermission(GuildPermission.ManageRoles)]
+        [Summary("Verifies a user as a member.")]
+        public async Task RevokeRole(string rolename, [Remainder] string username = null)
+        {
+            await Log.LogMessage(Context);
+            if (await Permissions.IsServerStaff(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
+            if (username == null) { await ReplyAsync("Please specify a user to verify"); return; }
+            await Role.RevokeRole(Context, rolename, username);
+        }
+
+
+
+
+    }
+}

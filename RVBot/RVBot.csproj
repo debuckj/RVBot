@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net462</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Discord.Net" Version="1.0.0-rc-00649" />
+    <PackageReference Include="Discord.Net.Commands" Version="1.0.0-rc-00649" />
+    <PackageReference Include="Discord.Net.Core" Version="1.0.0-rc-00649" />
+    <PackageReference Include="Discord.Net.Providers.WS4Net" Version="1.0.0-rc-00649" />
+    <PackageReference Include="Discord.Net.Rest" Version="1.0.0-rc-00649" />
+    <PackageReference Include="Discord.Net.Rpc" Version="1.0.0-rc-00649" />
+    <PackageReference Include="Discord.Net.WebSocket" Version="1.0.0-rc-00649" />
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+    </None>
+  </ItemGroup>
+
+</Project>
