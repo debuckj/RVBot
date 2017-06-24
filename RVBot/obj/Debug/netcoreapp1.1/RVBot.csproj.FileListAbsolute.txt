@@ -1,9 +1,0 @@
-D:\DiscordC#\RVBot\RVBot\bin\Debug\netcoreapp1.1\RVBot.deps.json
-D:\DiscordC#\RVBot\RVBot\bin\Debug\netcoreapp1.1\RVBot.runtimeconfig.json
-D:\DiscordC#\RVBot\RVBot\bin\Debug\netcoreapp1.1\RVBot.runtimeconfig.dev.json
-D:\DiscordC#\RVBot\RVBot\obj\Debug\netcoreapp1.1\RVBot.csprojResolveAssemblyReference.cache
-D:\DiscordC#\RVBot\RVBot\obj\Debug\netcoreapp1.1\RVBot.AssemblyInfo.cs
-D:\DiscordC#\RVBot\RVBot\bin\Debug\netcoreapp1.1\RVBot.dll
-D:\DiscordC#\RVBot\RVBot\bin\Debug\netcoreapp1.1\RVBot.pdb
-D:\DiscordC#\RVBot\RVBot\obj\Debug\netcoreapp1.1\RVBot.dll
-D:\DiscordC#\RVBot\RVBot\obj\Debug\netcoreapp1.1\RVBot.pdb
