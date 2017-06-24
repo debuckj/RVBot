@@ -26,7 +26,7 @@ namespace RVBot.Core
         }
         public static async Task<IGuildUser> GetUser(CommandContext context, string username)
         {
-            string _username = username.Trim('<', '@', '>');
+            string _username = username.Trim('<', '@', '>', '!');
             var users = await context.Guild.GetUsersAsync();
             foreach (IGuildUser user in users)
             {
@@ -42,6 +42,12 @@ namespace RVBot.Core
         public static bool HasRole(IGuildUser user, IRole role)
         {
             return user.RoleIds.Contains(role.Id);       
+        }
+
+        public static async Task ChangeName(IGuildUser user, string newname)
+        {
+            if ((user==null) || (newname == null)) { return; }
+            await user.ModifyAsync(x => x.Nickname = newname);
         }
     }
 }

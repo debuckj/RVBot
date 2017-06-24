@@ -17,10 +17,17 @@ namespace RVBot.Core
         private static string DefaultHeaderGrey = ":whitespace::grey_exclamation::whitespace:";
 
 
-        public static async Task<string> FormatAnnouncementMessage(CommandContext context, string title, string message)
+        public static string FormatAnnouncementMessage(CommandContext context, string title, string message)
         {
             string formattedTitle = String.Format("{0}**{1}**{2}", DefaultHeaderRed, title, DefaultHeaderRed);
-            return String.Format("{0}{1}{2}", formattedTitle, Environment.NewLine, message);
+            return String.Format("{0}{1}{2}{3}", formattedTitle, Environment.NewLine, Environment.NewLine, message);
+
+        }
+
+        public static string FormatInfoMessage(CommandContext context, string title, string message)
+        {
+            string formattedTitle = String.Format("{0}**{1}**{2}", DefaultHeaderRed, title, DefaultHeaderRed);
+            return String.Format("{0}{1}{2}{3}", Environment.NewLine, formattedTitle, Environment.NewLine, message);
 
         }
 

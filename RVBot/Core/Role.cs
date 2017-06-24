@@ -103,35 +103,20 @@ namespace RVBot.Core
         public static async Task<string> GetUserRoles(CommandContext context, string userName = null)
         {
             var statusMsg = await context.Channel.SendMessageAsync(String.Format("Searching server for user {0}", userName));
-            var users = await context.Guild.GetUsersAsync();
             IGuildUser _user = null;
             List<ulong> roleids = new List<ulong>();
-
-            userName = userName.Replace("@", "");
-
-            //await statusMsg.ModifyAsync(x => x.Content = String.Format("userlist check : {0}", users.Count.ToString()));
-
-            foreach (IGuildUser user in users)
-            {
-                if (user.Nickname != null) { if (user.Nickname.Equals(userName, StringComparison.CurrentCultureIgnoreCase)) { _user = user; break; } }
-                if ((user.ToUsernameDiscriminatorAndNickname().Equals(userName, StringComparison.CurrentCultureIgnoreCase)) ||
-                    (user.Id.ToString().Equals(userName, StringComparison.CurrentCultureIgnoreCase)) ||
-                    (user.Username.Equals(userName, StringComparison.CurrentCultureIgnoreCase)))
-                { _user = user; break; }
-            }
-
-            //await statusMsg.ModifyAsync(x => x.Content = "user not found check");
+            _user = await User.GetUser(context, userName);
 
             if (_user == null) { await statusMsg.ModifyAsync(x => x.Content = String.Format("Unable to find user {0}", userName)); return null; }
 
             roleids = _user.RoleIds.ToList();
 
-            //await statusMsg.ModifyAsync(x => x.Content = "roles dumped check");
-
             string roles = "`"; int rolecount = 0;
             foreach (ulong roleid in roleids)
             {
-                roles += context.Guild.Roles.FirstOrDefault(x => roleid.Equals(x.Id)).Name + " / "; rolecount++;
+                roles += context.Guild.Roles.FirstOrDefault(x => roleid.Equals(x.Id)).Name;
+                if(!roleid.Equals(roleids.Last())) { roles += " / "; }
+                rolecount++;
             }
             roles += "`";
             await statusMsg.ModifyAsync(x => x.Content = String.Format("User {0} ({1}) is assigned {2} roles:", userName, _user.ToUsernameDiscriminatorAndNickname(), rolecount));
@@ -145,16 +130,36 @@ namespace RVBot.Core
             return null;
         }
         
-        public static async Task VerifyMember(CommandContext context, string username)
+        public static async Task VerifyRV(CommandContext context, string username)
         {
             IGuildUser user = await User.GetUser(context, username);
-            IRole member = Role.GetRole(context, "Member");
-            IRole pending = Role.GetRole(context, "Pending");
+            IRole member = GetRole(context, "RV");
+            IRole pending = GetRole(context, "Pending");
+
+            await Task.Delay(100);
+
             await user.AddRoleAsync(member);
             await user.RemoveRoleAsync(pending);
             await Log.LogMessage(context, String.Format("verified user {0} - {1}", user.Nickname ?? user.Username, user.Id));
             await context.Channel.SendMessageAsync(String.Format("User {0} verified", user.Mention));
         }
+
+        public static async Task VerifyPV(CommandContext context, string username)
+        {
+            IGuildUser user = await User.GetUser(context, username);
+            IRole member = Role.GetRole(context, "PV");
+            IRole pending = Role.GetRole(context, "Pending");
+
+            await Task.Delay(100);
+
+            await user.AddRoleAsync(member);
+            await user.RemoveRoleAsync(pending);
+            await Log.LogMessage(context, String.Format("verified user {0} - {1}", user.Nickname ?? user.Username, user.Id));
+            await context.Channel.SendMessageAsync(String.Format("User {0} verified", user.Mention));
+        }
+
+
+
 
         public static async Task AssignRole(CommandContext context, string rolename, string username)
         {

@@ -12,28 +12,9 @@ using RVBot.Util;
 
 namespace RVBot
 {
-    public class Info : ModuleBase
-    {
 
-        [Command("arng"), Summary("creates random number based on range given")]
-        public async Task ARNG([Summary("range indicator")] int range, [Remainder, Summary("sequencer")] int loop)
-        {
-            await Log.LogMessage(Context);
-            var roleTable = await Util.Util.AnalyzeRNG(Context, range, loop);
-            if (roleTable != null) { await Context.Channel.SendMessageSplitCodeblockAsync(roleTable); }
-
-        }
-
-        [Command("rng"), Summary("creates random number based on range given")]
-        public async Task RNG([Remainder, Summary("get random number")] int range)
-        {
-            await ReplyAsync(Util.Util.GetCryptoRandom(range).ToString());
-        }
-
-    }
 
     // Create a module with the 'sample' prefix
-    [Group("sample")]
     public class Sample : ModuleBase
     {
         [Command("userinfo"), Summary("Returns info about the current user, or the user parameter, if one passed.")]
@@ -48,10 +29,13 @@ namespace RVBot
 
     public class UtilModule : ModuleBase
     {
-        [Command("purge"), Summary("purge")]
+        [Command("purge"), Summary("purges all messages from channel")]
+        [RequireContext(ContextType.Guild)]
+        [RequireUserPermission(GuildPermission.Administrator)]
         public async Task Purge()
         {
             await Log.LogMessage(Context);
+            if (await Permissions.IsServerStaff(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
             string statusMessage;
             int messageCount = 0; int loopcounter = 0; int statusUpdateDelay = 10; int statusDelay = 0;
 
@@ -100,9 +84,11 @@ namespace RVBot
         [RequireContext(ContextType.Guild)]
         [RequireUserPermission(GuildPermission.Administrator)]
         [Summary("Sends a pm to all users in the given role.")]
-        public async Task SendRoleUserPM([Remainder] string roleName = null)
+        public async Task SendRoleUserPM(string roleName = null, [Remainder] string message = null)
         {
             await Log.LogMessage(Context);
+            if (await Permissions.IsServerStaff(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
+
             if (roleName == null) { await Context.Channel.SendMessageAsync("Please provide a role"); return; }
             var statusMsg = await Context.Channel.SendMessageAsync("Fetching users");
 
@@ -127,24 +113,45 @@ namespace RVBot
                 if (usersFound.Count == 0) { await statusMsg.ModifyAsync(x => x.Content = "No users found with role " + roleName); return; }
                 await statusMsg.ModifyAsync(x => x.Content = "Found " + usersFound.Count.ToString() + " users with role " + roleName + ", sending pm");
 
-                string succesMessage = "Send to: "; string failedMessage = "Failed to send to: ";
-                var succesMsg = await Context.Channel.SendMessageAsync(succesMessage);
-                var failedMsg = await Context.Channel.SendMessageAsync(failedMessage);
+                List<IGuildUser> usersSucces = new List<IGuildUser>();
+                List<IGuildUser> usersFailed = new List<IGuildUser>();
 
                 foreach (IGuildUser user in usersFound)
                 {
                     try
                     {
                         IDMChannel x = await user.CreateDMChannelAsync();
-                        await x.SendMessageAsync("this is a test pm because you were assigned role " + role.Name);
-                        succesMessage += (user.Nickname ?? user.Username + " ");
-                        await succesMsg.ModifyAsync(y => y.Content = succesMessage);
+                        string messageTitle = "Message send by " + Context.User.ToUsernameDiscriminatorAndNickname() + " to all <" + role.Name + ">";
+                        await x.SendMessageAsync(String.Format("{0}{1}{2}{3}", messageTitle, Environment.NewLine, Environment.NewLine, message));
+                        usersSucces.Add(user);
                     }
                     catch
                     {
-                        failedMessage += (user.Nickname ?? user.Username + " ");
-                        await failedMsg.ModifyAsync(y => y.Content = failedMessage);
+                        usersFailed.Add(user);
                     }
+                }
+
+                string succesMessage = "Send to: "; string failedMessage = "Failed to send to: ";
+
+                if (usersSucces.Count !=0)
+                { 
+                    foreach (IGuildUser user in usersSucces)
+                    {
+                        succesMessage += user.Nickname ?? user.Username;
+                        if (!user.Equals(usersSucces.Last())) { succesMessage += " / "; }
+                    }
+                    await Context.Channel.SendMessageAsync(succesMessage);
+                }
+
+                if (usersFailed.Count != 0)
+                {
+                    foreach (IGuildUser user in usersFailed)
+                    {
+                        succesMessage += user.Nickname ?? user.Username;
+                        if (!user.Equals(usersFailed.Last())) { succesMessage += " / "; }
+                    }
+
+                    await Context.Channel.SendMessageAsync(failedMessage);
                 }
             }
         }

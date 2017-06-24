@@ -10,11 +10,9 @@ namespace RVBot.Core
 {
     public class Giveaway
     {
-        private static string giveawayRole = "Giveaway Participant";
-
 
         // gets the predefined logging channel
-        public static async Task Draw(CommandContext context, int amount=1)
+        public static async Task Draw(CommandContext context, string giveawayRole, int amount=1)
         {
             var statusMsg = await context.Channel.SendMessageAsync("`Fetching giveaway participants`");
             // get users with role giveaway > refactor out plz wtf is this shit

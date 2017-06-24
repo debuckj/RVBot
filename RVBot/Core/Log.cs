@@ -3,6 +3,7 @@ using Discord.Commands;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Timers;
 
 
 namespace RVBot.Core
@@ -12,7 +13,6 @@ namespace RVBot.Core
         //public enum LogFlag { Nom, Pos, Neg};
             
         private static string defaultLogChannel = "log-rvbot";
-        private static bool autoLogClean = false;
         private static int autoLogCleanLimit = 7;
 
         private static ulong _logchannelid = 0;
@@ -21,6 +21,26 @@ namespace RVBot.Core
             get { return _logchannelid; }
             set { _logchannelid = value; }
         }
+
+        private static Timer logTimer;
+        private static double logTimerInterval = 60 * 60 * 1000;
+        private static CommandContext _commandcontext;
+
+        public static async Task SetAutoLogClean(CommandContext context, bool autoclean)
+        {
+            await Log.LogMessage(context, "Logging autocleaner enabled");
+            logTimer = new Timer(logTimerInterval);
+            logTimer.Elapsed += new ElapsedEventHandler(checkForTime_Elapsed);
+            logTimer.Enabled = autoclean;
+            _commandcontext = context;
+        }
+
+        private static async void checkForTime_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            await CleanLog(_commandcontext);
+        }
+
+
 
         // sets logging output to a specific channel
         public static async Task SetLogChannel(CommandContext context, string channelname)
@@ -81,11 +101,6 @@ namespace RVBot.Core
 
 
 
-        public static async Task SetAutoLogClean(CommandContext context, bool autoclean)
-        {
-            autoLogClean = autoclean;
-            await Log.LogMessage(context, "Logging autocleaner enabled");
-        }
 
         public static async Task SetAutoLogCleanLimit(CommandContext context, int days)
         {
@@ -108,6 +123,9 @@ namespace RVBot.Core
                 if (DateTime.Compare(msg.CreatedAt.DateTime, dateLimit) < 0) { loopcounter++; await msg.DeleteAsync();  }
             }
             await Log.LogMessage(context, String.Format("CleanLog finished - {0} messages deleted", loopcounter));
-        }     
+        }
+
+
+
     }
 }

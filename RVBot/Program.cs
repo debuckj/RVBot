@@ -23,8 +23,9 @@ public class Program
         client = new DiscordSocketClient(new DiscordSocketConfig
         {
             LogLevel = LogSeverity.Info,
-            ConnectionTimeout = (int)10000,
-            WebSocketProvider = WS4NetProvider.Instance
+            ConnectionTimeout = (int)20000,
+            WebSocketProvider = WS4NetProvider.Instance,
+            MessageCacheSize = 20
         });
 
         client.Log += (message) =>
@@ -32,8 +33,6 @@ public class Program
             Console.WriteLine($"{message.ToString()}");
             return Task.CompletedTask;
         };
-
-        //commands = new CommandService();
 
         string token = "Mjk0NTg2MTQzODkzMDk0NDAw.C7Z6eA.ODnbINJfxv0vuN3pSU7WQMWd_1s";
 
@@ -46,15 +45,39 @@ public class Program
 
         await Task.Delay(-1);
     }
+
     public async Task InstallCommands()
     {
         // Hook the MessageReceived Event into our Command Handler
         client.MessageReceived += HandleCommand;
         // Discover all of the commands in this assembly and load them.
         //await commands.AddModulesAsync(Assembly.GetEntryAssembly());
-        await RVCommandService.Service.AddModulesAsync(Assembly.GetEntryAssembly());
 
+        //client.ChannelCreated += HandleEventChannelCreated;
+        //client.ChannelDestroyed += HandleEventChannelDestroyed;
+        //client.ChannelUpdated += HandleEventChannelUpdated;
+
+        //client.Connected += HandleEventConnected;
+
+        //client.MessageDeleted += HandleEventMessageDeleted;
+        //client.MessageReceived += HandleEventMessageReceived;
+        //client.MessageUpdated += HandleEventMessageUpdated;
+
+        //client.RoleCreated += HandleEventRoleCreated;
+        //client.RoleDeleted += HandleEventRoleDeleted;
+        //client.RoleUpdated += HandleEventRoleUpdated;
+
+        //client.UserBanned += HandleEventUserBanned;
+        //client.UserIsTyping
+        //client.UserJoined += HandleEventUserJoined;
+        //client.UserLeft += HandleEventUserLeft;
+        //client.UserUnbanned += HandleEventUserUnbanned;
+        //client.UserUpdated += HandleEventUserUpdated;
+        //client.UserVoiceStateUpdated
+
+        await RVCommandService.Service.AddModulesAsync(Assembly.GetEntryAssembly());
     }
+
     public async Task HandleCommand(SocketMessage messageParam)
     {
         // Don't process the command if it was a System Message
@@ -72,8 +95,9 @@ public class Program
         // rather an object stating if the command executed succesfully)
         var result = await RVCommandService.Service.ExecuteAsync(context, argPos, map);
         if (!result.IsSuccess)
-            await Log.LogMessage(context,result.ErrorReason);
-            //await context.Channel.SendMessageAsync(result.ErrorReason);
+            await Log.LogMessage(context, result.ErrorReason);
+        //await context.Channel.SendMessageAsync(result.ErrorReason);
+
     }
 }
 

@@ -15,7 +15,9 @@ namespace RVBot.Modules
         [Summary("Command to take over the world")]
         public async Task Help()
         {
-            var sb = new StringBuilder();
+            if (await Permissions.IsServerStaff(Context) == false) { return; }
+
+            var sb = new StringBuilder();      
 
             sb.AppendLine($"Prefix for all commands is `rv!` or {Context.Client.CurrentUser.Mention}");
 
@@ -25,11 +27,12 @@ namespace RVBot.Modules
 
             foreach (var module in _commandService.Modules.OrderBy(x => x.Name).ThenBy(x => x.Summary))
             { 
+
                 //sb.Append($"{module.Name}");
-                if (!string.IsNullOrWhiteSpace(module.Summary))
-                {
-                    sb.Append($" - {module.Summary}");
-                }
+                //if (!string.IsNullOrWhiteSpace(module.Summary))
+                //{
+                //    sb.Append($" - {module.Summary}");
+                //}
 
                 if (module.Preconditions.Any())
                 {
