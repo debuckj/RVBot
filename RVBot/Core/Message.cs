@@ -20,6 +20,8 @@ namespace RVBot.Core
         public static string FormatAnnouncementMessage(CommandContext context, string title, string message)
         {
             string formattedTitle = String.Format("{0}**{1}**{2}", DefaultHeaderRed, title, DefaultHeaderRed);
+
+            if (message == null) { return formattedTitle; }
             return String.Format("{0}{1}{2}{3}", formattedTitle, Environment.NewLine, Environment.NewLine, message);
 
         }

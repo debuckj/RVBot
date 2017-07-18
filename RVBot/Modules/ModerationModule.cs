@@ -28,8 +28,11 @@ namespace RVBot.Modules
             if (_user == null) { await ReplyAsync(String.Format("Unable to find user {0}", user)); return; }
             if (await Permissions.IsOfficer(Context, _user)) { await ReplyAsync(String.Format("Unable to kick user {0}", user)); return; }
 
-            await Context.Channel.SendFileAsync("Content/Images/KICK.gif");
-            
+            await Context.Channel.SendFileAsync("Content/Images/KICK.gif", "https://www.youtube.com/watch?v=kvGMFBPDqmc");
+
+            string kickpmmessage = String.Format("You were kicked from RV discord by {0} for reason: {1}{2}{3}{4}", Context.User.Mention, reason, Environment.NewLine, Environment.NewLine, "https://www.youtube.com/watch?v=kvGMFBPDqmc");
+            await User.SendMessage(_user, kickpmmessage);
+
             await _user.KickAsync();
             
             await ReplyAsync(String.Format("user {0} kicked by {1} for reason: {2}", _user.Mention, Context.User.Mention, reason));
