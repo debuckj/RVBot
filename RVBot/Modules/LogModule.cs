@@ -25,7 +25,7 @@ namespace RVBot
         public async Task LogMessageCommand([Remainder, Summary("The message to log")] string logmessage = null)
         {
             if (await Permissions.IsServerStaff(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
-            if (logmessage == null) { await Context.Channel.SendMessageAsync("Please provide something to log"); return; } 
+            if (logmessage == null) { await Context.Channel.SendMessageAsync("Please provide something to log"); return; }
             await Log.LogMessage(Context, logmessage);
         }
 
@@ -37,7 +37,7 @@ namespace RVBot
             if (await Permissions.IsServerStaff(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
             bool byesno;
             if ((yesno == null) || (!bool.TryParse(yesno, out byesno))) { await Context.Channel.SendMessageAsync("Please provide yes or no"); return; }
-            await Log.SetAutoLogClean(Context, byesno); 
+            await Log.SetAutoLogClean(Context, byesno);
         }
 
         [Command("setautodays"), Summary("Sets the limit for the autocleaner.")]

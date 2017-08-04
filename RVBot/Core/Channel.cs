@@ -10,14 +10,14 @@ namespace RVBot.Core
 {
     public static class Channel
     {
-        public static async Task<IMessageChannel> GetChannel(CommandContext context, ulong id)
+        public static async Task<IMessageChannel> GetChannel(ICommandContext context, ulong id)
         {
             var chans = await context.Guild.GetTextChannelsAsync();
             foreach (IMessageChannel chan in chans) { if (chan.Id.Equals(id)) { return chan; } }
             return null;
         }
 
-        public static async Task<IMessageChannel> GetChannel(CommandContext context, string name)
+        public static async Task<IMessageChannel> GetChannel(ICommandContext context, string name)
         {
             ulong chanid = 0;
             string channelname = name.Trim('<', '>', '#');

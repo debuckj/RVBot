@@ -11,7 +11,7 @@ namespace RVBot.Core
     public class Role
     {
         //outputs amount of users for all roles or a specific role
-        public static async Task<string> GetRoleMembers(CommandContext context, string roleNames)
+        public static async Task<string> GetRoleMembers(ICommandContext context, string roleNames)
         {
             var roles = context.Guild.Roles.Where(x => roleNames == null || roleNames.Equals(x.Name.Replace("@", ""), StringComparison.CurrentCultureIgnoreCase)).OrderByDescending(x => x.Position).ToList();
             var users = await context.Guild.GetUsersAsync();
@@ -29,7 +29,7 @@ namespace RVBot.Core
         }
 
         //lists out the users for a specified role
-        public static async Task<string> GetRoleUsers(CommandContext context, string roleName = null)
+        public static async Task<string> GetRoleUsers(ICommandContext context, string roleName = null)
         {
             var users = await context.Guild.GetUsersAsync();
 
@@ -46,7 +46,7 @@ namespace RVBot.Core
                     {
                         Name = user.Nickname ?? user.Username,
                         Dis = user.Username + "#" + user.Discriminator,
-                        Join = user.JoinedAt.Value.Date.ToShortDateString(),
+                        Join = user.JoinedAt.Value.Date.ToString("yyyy-MM-dd"),
                         Days = (DateTime.Now - user.JoinedAt.Value.Date).Days.ToString(),
                         Status = user.Status.ToString()
 
@@ -62,7 +62,7 @@ namespace RVBot.Core
                 {
                     Name = user.Nickname ?? user.Username,
                     Dis = user.Username + "#" + user.Discriminator,
-                    Join = user.JoinedAt.Value.Date.ToShortDateString(),
+                    Join = user.JoinedAt.Value.Date.ToString("yyyy-MM-dd"),
                     Days = (DateTime.Now - user.JoinedAt.Value.Date).Days.ToString(),
                     Status = user.Status.ToString()
 
@@ -71,7 +71,7 @@ namespace RVBot.Core
             }
         }
 
-        public static async Task<string> GetUnregisteredUsers(CommandContext context, string roleNames)
+        public static async Task<string> GetUnregisteredUsers(ICommandContext context, string roleNames)
         {
             var statusMsg = await context.Channel.SendMessageAsync("Fetching unregistered users");
             List<IGuildUser> usersFound = new List<IGuildUser>();
@@ -92,7 +92,7 @@ namespace RVBot.Core
             {
                 Name = user.Nickname ?? user.Username,
                 Dis = user.Username + "#" + user.Discriminator,
-                Join = user.JoinedAt.Value.Date.ToShortDateString(),
+                Join = user.JoinedAt.Value.Date.ToString("yyyy-MM-dd"),
                 Days = (DateTime.Now - user.JoinedAt.Value.Date).Days.ToString(),
                 Status = user.Status.ToString()
             }).ToList());
@@ -100,7 +100,7 @@ namespace RVBot.Core
         }
 
         //lists out the roles for a specified user
-        public static async Task<string> GetUserRoles(CommandContext context, string userName = null)
+        public static async Task<string> GetUserRoles(ICommandContext context, string userName = null)
         {
             var statusMsg = await context.Channel.SendMessageAsync(String.Format("Searching server for user {0}", userName));
             IGuildUser _user = null;
@@ -122,15 +122,15 @@ namespace RVBot.Core
             await statusMsg.ModifyAsync(x => x.Content = String.Format("User {0} ({1}) is assigned {2} roles:", userName, _user.ToUsernameDiscriminatorAndNickname(), rolecount));
             return roles;
         }
-        
-        public static IRole GetRole(CommandContext context, string rolename)
+
+        public static IRole GetRole(ICommandContext context, string rolename)
         {
             IRole role = context.Guild.Roles.FirstOrDefault(x => rolename.Equals(x.Name.Replace("@", ""), StringComparison.CurrentCultureIgnoreCase));
             if (role != null) { return role; }
             return null;
         }
-        
-        public static async Task VerifyRV(CommandContext context, IGuildUser user)
+
+        public static async Task VerifyRV(ICommandContext context, IGuildUser user)
         {
             //IGuildUser user = await User.GetUser(context, username);
             IRole member = GetRole(context, "RV");
@@ -144,7 +144,7 @@ namespace RVBot.Core
             await context.Channel.SendMessageAsync(String.Format("User {0} verified", user.Mention));
         }
 
-        public static async Task VerifyPV(CommandContext context, IGuildUser user)
+        public static async Task VerifyPV(ICommandContext context, IGuildUser user)
         {
             //IGuildUser user = await User.GetUser(context, username);
             IRole member = Role.GetRole(context, "PV");
@@ -161,14 +161,14 @@ namespace RVBot.Core
 
 
 
-        public static async Task AssignRole(CommandContext context, string rolename, string username)
+        public static async Task AssignRole(ICommandContext context, string rolename, string username)
         {
             IGuildUser user = await User.GetUser(context, username);
             IRole role = Role.GetRole(context, rolename);
             await user.AddRoleAsync(role);
         }
 
-        public static async Task RevokeRole(CommandContext context, string rolename, string username)
+        public static async Task RevokeRole(ICommandContext context, string rolename, string username)
         {
             IGuildUser user = await User.GetUser(context, username);
             IRole role = Role.GetRole(context, rolename);
