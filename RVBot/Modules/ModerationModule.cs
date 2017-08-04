@@ -16,17 +16,17 @@ namespace RVBot.Modules
         [RequireContext(ContextType.Guild)]
         //[RequireUserPermission(GuildPermission.ManageRoles)]
         [Summary("Kicks a user. ")]
-        public async Task KickUser([Summary("The user to kick")] string user = null, [Remainder, Summary("The reason for the kick")] string reason = null)
+        public async Task KickUser([Summary("The user to kick")] IGuildUser _user, [Remainder, Summary("The reason for the kick")] string reason = null)
         {
             await Log.LogMessage(Context);
             if (await Permissions.IsOfficer(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
 
-            if (user == null) { await ReplyAsync("Please specify a user"); return; }
+            //if (user == null) { await ReplyAsync("Please specify a user"); return; }
             if (reason == null) { await ReplyAsync("Please specify a reason"); return; }
 
-            IGuildUser _user = await User.GetUser(Context, user);
-            if (_user == null) { await ReplyAsync(String.Format("Unable to find user {0}", user)); return; }
-            if (await Permissions.IsOfficer(Context, _user)) { await ReplyAsync(String.Format("Unable to kick user {0}", user)); return; }
+            //IGuildUser _user = await User.GetUser(Context, user);
+            //if (_user == null) { await ReplyAsync(String.Format("Unable to find user {0}", user)); return; }
+            if (await Permissions.IsOfficer(Context, _user)) { await ReplyAsync(String.Format("Unable to kick user {0}", _user.Mention)); return; }
 
             await Context.Channel.SendFileAsync("Content/Images/KICK.gif", "https://www.youtube.com/watch?v=kvGMFBPDqmc");
 
@@ -44,19 +44,22 @@ namespace RVBot.Modules
         [RequireContext(ContextType.Guild)]
         //[RequireUserPermission(GuildPermission.ManageRoles)]
         [Summary("Bans a user. ")]
-        public async Task BanUser([Summary("The user to ban")] string user = null, [Remainder, Summary("The reason for the ban")] string reason = null)
+        public async Task BanUser([Summary("The user to ban")]  IGuildUser _user, [Remainder, Summary("The reason for the ban")] string reason = null)
         {
             await Log.LogMessage(Context);
             if (await Permissions.IsOfficer(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
 
-            if (user == null) { await ReplyAsync("Please specify a user"); return; }
+            //if (user == null) { await ReplyAsync("Please specify a user"); return; }
             if (reason == null) { await ReplyAsync("Please specify a reason"); return; }
 
-            IGuildUser _user = await User.GetUser(Context, user);
-            if (_user == null) { await ReplyAsync(String.Format("Unable to find user {0}", user)); return; }
-            if (await Permissions.IsOfficer(Context, _user)) { await ReplyAsync(String.Format("Unable to ban user {0}", user)); return; }
+            //IGuildUser _user = await User.GetUser(Context, user);
+            //if (_user == null) { await ReplyAsync(String.Format("Unable to find user {0}", user)); return; }
+            if (await Permissions.IsOfficer(Context, _user)) { await ReplyAsync(String.Format("Unable to ban user {0}", _user.Mention)); return; }
 
-            await Context.Channel.SendFileAsync("Content/Images/BAN.gif");
+            await Context.Channel.SendFileAsync("Content/Images/BAN.gif", "https://www.youtube.com/watch?v=kvGMFBPDqmc");
+
+            string banpmmessage = String.Format("You were banned from RV discord by {0} for reason: {1}{2}{3}{4}", Context.User.Mention, reason, Environment.NewLine, Environment.NewLine, "https://www.youtube.com/watch?v=kvGMFBPDqmc");
+            await User.SendMessage(_user, banpmmessage);
 
             await Context.Guild.AddBanAsync(_user.Id, 1); await _user.KickAsync();
 

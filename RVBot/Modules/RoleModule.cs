@@ -72,12 +72,12 @@ namespace RVBot.Modules
         [RequireContext(ContextType.Guild)]
         //[RequireUserPermission(GuildPermission.ManageRoles)]
         [Summary("Verifies a user as a member.")]
-        public async Task VerifyRV([Remainder] string username = null)
+        public async Task VerifyRV([Remainder] IGuildUser _user)
         {
             await Log.LogMessage(Context);
             if (await Permissions.IsOfficer(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
-            if (username == null) { await ReplyAsync("Please specify a user to verify"); return; }
-            await Role.VerifyRV(Context, username);
+            //if (username == null) { await ReplyAsync("Please specify a user to verify"); return; }
+            await Role.VerifyRV(Context, _user);
         }
 
         [Command("vpv")]
@@ -85,12 +85,12 @@ namespace RVBot.Modules
         [RequireContext(ContextType.Guild)]
         //[RequireUserPermission(GuildPermission.ManageRoles)]
         [Summary("Verifies a user as a member.")]
-        public async Task VerifyPV([Remainder] string username = null)
+        public async Task VerifyPV([Remainder] IGuildUser _user)
         {
             await Log.LogMessage(Context);
             if (await Permissions.IsOfficer(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
-            if (username == null) { await ReplyAsync("Please specify a user to verify"); return; }
-            await Role.VerifyPV(Context, username);
+            //if (username == null) { await ReplyAsync("Please specify a user to verify"); return; }
+            await Role.VerifyPV(Context, _user);
         }
 
         [Command("+role")]

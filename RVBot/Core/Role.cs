@@ -130,9 +130,9 @@ namespace RVBot.Core
             return null;
         }
         
-        public static async Task VerifyRV(CommandContext context, string username)
+        public static async Task VerifyRV(CommandContext context, IGuildUser user)
         {
-            IGuildUser user = await User.GetUser(context, username);
+            //IGuildUser user = await User.GetUser(context, username);
             IRole member = GetRole(context, "RV");
             IRole pending = GetRole(context, "Pending");
 
@@ -144,9 +144,9 @@ namespace RVBot.Core
             await context.Channel.SendMessageAsync(String.Format("User {0} verified", user.Mention));
         }
 
-        public static async Task VerifyPV(CommandContext context, string username)
+        public static async Task VerifyPV(CommandContext context, IGuildUser user)
         {
-            IGuildUser user = await User.GetUser(context, username);
+            //IGuildUser user = await User.GetUser(context, username);
             IRole member = Role.GetRole(context, "PV");
             IRole pending = Role.GetRole(context, "Pending");
 
