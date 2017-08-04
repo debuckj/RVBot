@@ -35,7 +35,7 @@ public class Program
             return Task.CompletedTask;
         };
 
-        string token = "Mjk0NTg2MTQzODkzMDk0NDAw.DGZstw.XadYSmwxohsLIrCqB5a-RsS00DE";
+        string token = Environment.GetEnvironmentVariable("RVBot_Token");
 
         map = new ServiceCollection().BuildServiceProvider();
 
