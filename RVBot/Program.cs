@@ -4,15 +4,14 @@ using System.Reflection;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using Discord.Net.Providers.WS4Net;
 using RVBot.Core;
-
+using Microsoft.Extensions.DependencyInjection;
 
 public class Program
 {
     //private CommandService commands;
     private DiscordSocketClient client;
-    private DependencyMap map;
+    private IServiceProvider map;
 
     // Convert our sync main to an async main.
     public static void Main(string[] args) =>
@@ -24,7 +23,9 @@ public class Program
         {
             LogLevel = LogSeverity.Info,
             ConnectionTimeout = (int)20000,
-            WebSocketProvider = WS4NetProvider.Instance,
+#if NET462
+            WebSocketProvider = Discord.Net.Providers.WS4Net.WS4NetProvider.Instance,
+#endif
             MessageCacheSize = 20
         });
 
@@ -34,9 +35,9 @@ public class Program
             return Task.CompletedTask;
         };
 
-        string token = "Mjk0NTg2MTQzODkzMDk0NDAw.C7Z6eA.ODnbINJfxv0vuN3pSU7WQMWd_1s";
+        string token = Environment.GetEnvironmentVariable("RVBot_Token");
 
-        map = new DependencyMap();
+        map = new ServiceCollection().BuildServiceProvider();
 
         await InstallCommands();
 
@@ -91,7 +92,7 @@ public class Program
         // Create a Command Context
 
         var context = new CommandContext(client, message);
-        // Execute the command. (result does not indicate a return value, 
+        // Execute the command. (result does not indicate a return value,
         // rather an object stating if the command executed succesfully)
         var result = await RVCommandService.Service.ExecuteAsync(context, argPos, map);
         if (!result.IsSuccess)

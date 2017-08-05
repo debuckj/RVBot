@@ -8,13 +8,12 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using System.Timers;
 
 namespace RVBot.Util
 {
     public static class Util
     {
-        public static async Task<string> AnalyzeRNG(CommandContext context, int range, int loop)
+        public static async Task<string> AnalyzeRNG(ICommandContext context, int range, int loop)
         {
             Stopwatch sw = Stopwatch.StartNew();
             sw.Start();
@@ -40,7 +39,7 @@ namespace RVBot.Util
         public static int GetSecureRandom(int range)
         {
             byte[] intBytes = BitConverter.GetBytes(range);
-            using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
+            using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
             {
                 rng.GetBytes(intBytes);
                 int randomvalue = BitConverter.ToInt32(intBytes, 0);
@@ -64,7 +63,7 @@ namespace RVBot.Util
 
     public class CryptoRandom : Random
     {
-        private RNGCryptoServiceProvider _rng = new RNGCryptoServiceProvider();
+        private RandomNumberGenerator _rng = RandomNumberGenerator.Create();
         private byte[] _buffer;
         private int _bufferPosition;
         public bool IsRandomPoolEnabled { get; private set; }

@@ -8,15 +8,15 @@ namespace RVBot.Core
 {
     public static class User
     {
-        public static async Task<IGuildUser> GetUser(CommandContext context, IUser user)
+        public static async Task<IGuildUser> GetUser(ICommandContext context, IUser user)
         {
             return await GetUser(context, user.Id);
         }
-        public static async Task<IGuildUser> GetUser(CommandContext context, IGuildUser user)
+        public static async Task<IGuildUser> GetUser(ICommandContext context, IGuildUser user)
         {
             return await GetUser(context, user.Id);
         }
-        public static async Task<IGuildUser> GetUser(CommandContext context, ulong userid)
+        public static async Task<IGuildUser> GetUser(ICommandContext context, ulong userid)
         {
             var users = await context.Guild.GetUsersAsync();
             foreach (IGuildUser user in users) {
@@ -24,7 +24,7 @@ namespace RVBot.Core
                     return user; } }
             return null;
         }
-        public static async Task<IGuildUser> GetUser(CommandContext context, string username)
+        public static async Task<IGuildUser> GetUser(ICommandContext context, string username)
         {
             string _username = username.Trim('<', '@', '!', '>');
             var users = await context.Guild.GetUsersAsync();
@@ -51,8 +51,8 @@ namespace RVBot.Core
         }
 
         public static async Task SendMessage(IGuildUser user, string message)
-        { 
-            IDMChannel x = await user.CreateDMChannelAsync();
+        {
+            IDMChannel x = await user.GetOrCreateDMChannelAsync();
             await x.SendMessageAsync(message);
         }
     }

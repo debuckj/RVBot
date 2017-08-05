@@ -2,16 +2,15 @@
 using Discord.Commands;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
-
 
 namespace RVBot.Core
 {
     public static class Log
     {
         //public enum LogFlag { Nom, Pos, Neg};
-            
+
         private static string defaultLogChannel = "log-rvbot";
         private static int autoLogCleanLimit = 7;
 
@@ -22,28 +21,37 @@ namespace RVBot.Core
             set { _logchannelid = value; }
         }
 
-        private static Timer logTimer;
-        private static double logTimerInterval = 60 * 60 * 1000;
-        private static CommandContext _commandcontext;
+        //private static Timer logTimer;
+        private static Task backgroundTask;
+        private static TimeSpan logTimerInterval = TimeSpan.FromHours(1);
+        private static ICommandContext _commandcontext;
 
-        public static async Task SetAutoLogClean(CommandContext context, bool autoclean)
+        public static async Task SetAutoLogClean(ICommandContext context, bool autoclean)
         {
             await Log.LogMessage(context, "Logging autocleaner enabled");
-            logTimer = new Timer(logTimerInterval);
-            logTimer.Elapsed += new ElapsedEventHandler(checkForTime_Elapsed);
-            logTimer.Enabled = autoclean;
+            backgroundTask = Task.Run(async () =>
+            {
+                while (true)
+                {
+                    CleanLog(_commandcontext);
+                    await Task.Delay(logTimerInterval);
+                }
+            });
+            //logTimer = new Timer(logTimerInterval);
+            //logTimer.Elapsed += new ElapsedEventHandler(checkForTime_Elapsed);
+            //logTimer.Enabled = autoclean;
             _commandcontext = context;
         }
 
-        private static async void checkForTime_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            await CleanLog(_commandcontext);
-        }
+        //private static async void checkForTime_Elapsed(object sender, ElapsedEventArgs e)
+        //{
+        //    await CleanLog(_commandcontext);
+        //}
 
 
 
         // sets logging output to a specific channel
-        public static async Task SetLogChannel(CommandContext context, string channelname)
+        public static async Task SetLogChannel(ICommandContext context, string channelname)
         {
             if (channelname == null) { await context.Channel.SendMessageAsync(String.Format("Please specify a channel")); }
             IMessageChannel logchannel = await Channel.GetChannel(context, channelname);
@@ -54,7 +62,7 @@ namespace RVBot.Core
         }
 
         // gets the predefined logging channel
-        public static async Task<IMessageChannel> GetLogChannel(CommandContext context)
+        public static async Task<IMessageChannel> GetLogChannel(ICommandContext context)
         {
             if (LogChannelId == 0) {
                 var chans = await context.Guild.GetTextChannelsAsync();
@@ -70,13 +78,13 @@ namespace RVBot.Core
         }
 
         // logs a message to the predefined logging channel
-        public static async Task LogMessage(CommandContext context, string logmessage = "")
+        public static async Task LogMessage(ICommandContext context, string logmessage = "")
         {
             IMessageChannel logchannel = await Log.GetLogChannel(context);
             if (logchannel != null) { await logchannel.SendMessageAsync(Log.LogMessageStringBuilder(context, logmessage)); }
         }
 
-        private static string LogMessageStringBuilder(CommandContext context, string logmessage = "")
+        private static string LogMessageStringBuilder(ICommandContext context, string logmessage = "")
         {
             string returnmessage; int intUserSpacer = 12; int intCommandSpacer = 12; int intChannelSpacer = 12;
             //string strUserSpacer = ""; string strCommandSpacer = ""; string strChannelSpacer = "";
@@ -91,7 +99,7 @@ namespace RVBot.Core
             //if (intChannelSpacer > strChannel.Length) { strChannelSpacer = new string(' ', (intChannelSpacer - strChannel.Length)); }
             string strUserSpacer = (intUserSpacer > strUser.Length) ? new string(' ', (intUserSpacer - strUser.Length)): "";
             string strCommandSpacer = (intCommandSpacer > strCommand.Length) ? new string(' ', (intCommandSpacer - strCommand.Length)) : "";
-            string strChannelSpacer = (intChannelSpacer > strChannel.Length) ? new string(' ', (intChannelSpacer - strChannel.Length)) : ""; 
+            string strChannelSpacer = (intChannelSpacer > strChannel.Length) ? new string(' ', (intChannelSpacer - strChannel.Length)) : "";
 
 
             //returnmessage = "`" + strDate + " " + strUser + strUserSpacer + " " + strCommand + strCommandSpacer + " #" + strChannel + strChannelSpacer + " " + logmessage + "`";
@@ -102,13 +110,13 @@ namespace RVBot.Core
 
 
 
-        public static async Task SetAutoLogCleanLimit(CommandContext context, int days)
+        public static async Task SetAutoLogCleanLimit(ICommandContext context, int days)
         {
             autoLogCleanLimit = days;
             await Log.LogMessage(context, String.Format("Logging autocleaner limit set to {0} days", autoLogCleanLimit));
         }
 
-        public static async Task CleanLog(CommandContext context)
+        public static async Task CleanLog(ICommandContext context)
         {
             IMessageChannel logchannel = await Channel.GetChannel(context, _logchannelid);
             if (logchannel==null) { await Log.LogMessage(context,"Unable to determine loggingchannel"); return; }

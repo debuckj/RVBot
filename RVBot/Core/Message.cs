@@ -17,7 +17,7 @@ namespace RVBot.Core
         private static string DefaultHeaderGrey = ":whitespace::grey_exclamation::whitespace:";
 
 
-        public static string FormatAnnouncementMessage(CommandContext context, string title, string message)
+        public static string FormatAnnouncementMessage(ICommandContext context, string title, string message)
         {
             string formattedTitle = String.Format("{0}**{1}**{2}", DefaultHeaderRed, title, DefaultHeaderRed);
 
@@ -26,7 +26,7 @@ namespace RVBot.Core
 
         }
 
-        public static string FormatInfoMessage(CommandContext context, string title, string message)
+        public static string FormatInfoMessage(ICommandContext context, string title, string message)
         {
             string formattedTitle = String.Format("{0}**{1}**{2}", DefaultHeaderRed, title, DefaultHeaderRed);
             return String.Format("{0}{1}{2}{3}", Environment.NewLine, formattedTitle, Environment.NewLine, message);

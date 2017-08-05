@@ -12,7 +12,7 @@ namespace RVBot.Core
     {
 
         // gets the predefined logging channel
-        public static async Task Draw(CommandContext context, string giveawayRole, int amount=1)
+        public static async Task Draw(ICommandContext context, string giveawayRole, int amount=1)
         {
             var statusMsg = await context.Channel.SendMessageAsync("`Fetching giveaway participants`");
             // get users with role giveaway > refactor out plz wtf is this shit
@@ -73,7 +73,7 @@ namespace RVBot.Core
                             winners += " and ";
                         }
                     }
-                    
+
                 }
 
                 await context.Channel.SendMessageAsync(String.Format("Congratulations to {0}", winners));

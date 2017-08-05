@@ -21,12 +21,14 @@ namespace RVBot.Modules
         {
             await Log.LogMessage(Context);
 
-            string appPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
-            string catPath = appPath + "\\Content\\ImagesCats";
+            //string appPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
+            //string catPath = appPath + "\\Content\\ImagesCats";
 
-            
-            catPath = catPath.Replace("\\", "/");
-            catPath = catPath.Replace("file:/", "");
+
+            //catPath = catPath.Replace("\\", "/");
+            //catPath = catPath.Replace("file:/", "");
+
+            var catPath = Path.Combine("Content", "ImagesCats");
 
             string[] cats = Directory.GetFiles(catPath, "*", SearchOption.AllDirectories);
 
@@ -46,12 +48,14 @@ namespace RVBot.Modules
         {
             await Log.LogMessage(Context);
 
-            string appPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
-            string dogPath = appPath + "\\Content\\ImagesDogs";
+            //string appPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
+            //string dogPath = appPath + "\\Content\\ImagesDogs";
 
 
-            dogPath = dogPath.Replace("\\", "/");
-            dogPath = dogPath.Replace("file:/", "");
+            //dogPath = dogPath.Replace("\\", "/");
+            //dogPath = dogPath.Replace("file:/", "");
+
+            var dogPath = Path.Combine("Content", "ImagesDogs");
 
             string[] dogs = Directory.GetFiles(dogPath, "*", SearchOption.AllDirectories);
 

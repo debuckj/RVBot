@@ -77,8 +77,8 @@ namespace RVBot
             await statusMsg.DeleteAsync();
         }
 
-      
-       
+
+
         [Command("privatemessageroleusers")]
         [Alias("pmru")]
         [RequireContext(ContextType.Guild)]
@@ -120,7 +120,7 @@ namespace RVBot
                 {
                     try
                     {
-                        IDMChannel x = await user.CreateDMChannelAsync();
+                        IDMChannel x = await user.GetOrCreateDMChannelAsync();
                         string messageTitle = "Message send by " + Context.User.ToUsernameDiscriminatorAndNickname() + " to all <" + role.Name + ">";
                         await x.SendMessageAsync(String.Format("{0}{1}{2}{3}", messageTitle, Environment.NewLine, Environment.NewLine, message));
                         usersSucces.Add(user);
@@ -134,7 +134,7 @@ namespace RVBot
                 string succesMessage = "Send to: "; string failedMessage = "Failed to send to: ";
 
                 if (usersSucces.Count !=0)
-                { 
+                {
                     foreach (IGuildUser user in usersSucces)
                     {
                         succesMessage += user.Nickname ?? user.Username;
@@ -164,4 +164,3 @@ namespace RVBot
 
     }
 }
- 
