@@ -23,7 +23,7 @@ namespace RVBot.Core
 
         //private static Timer logTimer;
         private static Task backgroundTask;
-        private static TimeSpan logTimerInterval = TimeSpan.FromHours(1);
+        private static TimeSpan logTimerInterval = TimeSpan.FromHours(24);
         private static ICommandContext _commandcontext;
 
         public static async Task SetAutoLogClean(ICommandContext context, bool autoclean)
@@ -33,7 +33,7 @@ namespace RVBot.Core
             {
                 while (true)
                 {
-                    CleanLog(_commandcontext);
+                    await CleanLog(_commandcontext);
                     await Task.Delay(logTimerInterval);
                 }
             });
@@ -123,7 +123,7 @@ namespace RVBot.Core
 
             var messages = await logchannel.GetMessagesAsync(100000).Flatten();
 
-            int days = 7; int loopcounter = 0;
+            int days = autoLogCleanLimit; int loopcounter = 0;
             await Log.LogMessage(context, String.Format("Cleaning logs older then {0} days", days));
             foreach (var msg in messages)
             {

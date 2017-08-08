@@ -100,14 +100,14 @@ namespace RVBot.Core
         }
 
         //lists out the roles for a specified user
-        public static async Task<string> GetUserRoles(ICommandContext context, string userName = null)
+        public static async Task<string> GetUserRoles(ICommandContext context, IGuildUser _user)
         {
-            var statusMsg = await context.Channel.SendMessageAsync(String.Format("Searching server for user {0}", userName));
-            IGuildUser _user = null;
+            var statusMsg = await context.Channel.SendMessageAsync(String.Format("Query server for user {0}", _user));
+            //IGuildUser _user = null;
             List<ulong> roleids = new List<ulong>();
-            _user = await User.GetUser(context, userName);
+            //_user = await User.GetUser(context, userName);
 
-            if (_user == null) { await statusMsg.ModifyAsync(x => x.Content = String.Format("Unable to find user {0}", userName)); return null; }
+            if (_user == null) { await statusMsg.ModifyAsync(x => x.Content = String.Format("Unable to find user {0}", _user)); return null; }
 
             roleids = _user.RoleIds.ToList();
 
@@ -119,7 +119,7 @@ namespace RVBot.Core
                 rolecount++;
             }
             roles += "`";
-            await statusMsg.ModifyAsync(x => x.Content = String.Format("User {0} ({1}) is assigned {2} roles:", userName, _user.ToUsernameDiscriminatorAndNickname(), rolecount));
+            await statusMsg.ModifyAsync(x => x.Content = String.Format("User {0} ({1}) is assigned {2} roles:", _user, _user.ToUsernameDiscriminatorAndNickname(), rolecount));
             return roles;
         }
 
@@ -161,18 +161,18 @@ namespace RVBot.Core
 
 
 
-        public static async Task AssignRole(ICommandContext context, string rolename, string username)
+        public static async Task AssignRole(ICommandContext context, IRole _role, IGuildUser _user)
         {
-            IGuildUser user = await User.GetUser(context, username);
-            IRole role = Role.GetRole(context, rolename);
-            await user.AddRoleAsync(role);
+            //IGuildUser user = await User.GetUser(context, _user);
+            //IRole role = Role.GetRole(context, rolename);
+            await _user.AddRoleAsync(_role);
         }
 
-        public static async Task RevokeRole(ICommandContext context, string rolename, string username)
+        public static async Task RevokeRole(ICommandContext context, IRole _role, IGuildUser _user)
         {
-            IGuildUser user = await User.GetUser(context, username);
-            IRole role = Role.GetRole(context, rolename);
-            await user.RemoveRoleAsync(role);
+            //IGuildUser user = await User.GetUser(context, _user);
+            //IRole role = Role.GetRole(context, rolename);
+            await _user.RemoveRoleAsync(_role);
         }
 
     }
