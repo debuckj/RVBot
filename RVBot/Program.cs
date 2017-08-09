@@ -31,7 +31,7 @@ public class Program
 
         client.Log += (message) =>
         {
-            Console.WriteLine($"{message.ToString()}");
+            Console.WriteLine($"{DateTime.UtcNow.ToString("yyyy-MM-dd")} {message.ToString()}");
             return Task.CompletedTask;
         };
 

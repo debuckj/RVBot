@@ -13,6 +13,7 @@ namespace RVBot.Core
 
         private static string defaultLogChannel = "log-rvbot";
         private static int autoLogCleanLimit = 7;
+        private static bool autoLogClean = false;
 
         private static ulong _logchannelid = 0;
         public static ulong LogChannelId
@@ -23,17 +24,18 @@ namespace RVBot.Core
 
         //private static Timer logTimer;
         private static Task backgroundTask;
-        private static TimeSpan logTimerInterval = TimeSpan.FromHours(1);
+        private static TimeSpan logTimerInterval = TimeSpan.FromHours(24);
         private static ICommandContext _commandcontext;
 
         public static async Task SetAutoLogClean(ICommandContext context, bool autoclean)
         {
-            await Log.LogMessage(context, "Logging autocleaner enabled");
+            autoLogClean = autoclean;
+            await Log.LogMessage(context, autoclean ? "Logging autocleaner enabled" : "Logging autocleaner disabled");
             backgroundTask = Task.Run(async () =>
             {
-                while (true)
+                while (autoLogClean == true)
                 {
-                    CleanLog(_commandcontext);
+                    await CleanLog(_commandcontext);
                     await Task.Delay(logTimerInterval);
                 }
             });
@@ -60,6 +62,13 @@ namespace RVBot.Core
                 await context.Channel.SendMessageAsync(String.Format("Logging set to channel <#{0}>", LogChannelId)); return; }
             await context.Channel.SendMessageAsync(String.Format("Channel `{0}` not found", channelname));
         }
+        //public static async Task SetLogChannel(ICommandContext context, IMessageChannel channel)
+        //{
+        //    LogChannelId = channel.Id;
+        //    await context.Channel.SendMessageAsync(String.Format("Logging set to channel <#{0}>", LogChannelId)); return;
+        //}
+
+
 
         // gets the predefined logging channel
         public static async Task<IMessageChannel> GetLogChannel(ICommandContext context)
@@ -123,7 +132,7 @@ namespace RVBot.Core
 
             var messages = await logchannel.GetMessagesAsync(100000).Flatten();
 
-            int days = 7; int loopcounter = 0;
+            int days = autoLogCleanLimit; int loopcounter = 0;
             await Log.LogMessage(context, String.Format("Cleaning logs older then {0} days", days));
             foreach (var msg in messages)
             {

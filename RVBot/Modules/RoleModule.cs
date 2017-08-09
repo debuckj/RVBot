@@ -57,12 +57,12 @@ namespace RVBot.Modules
         [RequireContext(ContextType.Guild)]
         [RequireUserPermission(GuildPermission.ManageRoles)]
         [Summary("Lists the roles of a specified user.")]
-        public async Task GetUserRoleSummary([Remainder] string username = null)
+        public async Task GetUserRoleSummary([Remainder] IGuildUser _user)
         {
             await Log.LogMessage(Context);
             if (await Permissions.IsOfficer(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
-            if (username == null) { await ReplyAsync("Please specify a user to query"); return; }
-            var roleTable = await Role.GetUserRoles(Context, username);
+            if (_user == null) { await ReplyAsync("Please specify a user to query"); return; }
+            var roleTable = await Role.GetUserRoles(Context, _user);
             //if (userTable == "ERROR_NOUSERFOUND") { await ReplyAsync("No user found with name " + username); return; }
             await ReplyAsync(roleTable);
         }
@@ -98,42 +98,35 @@ namespace RVBot.Modules
         [RequireContext(ContextType.Guild)]
         [RequireUserPermission(GuildPermission.ManageRoles)]
         [Summary("Assign a role to a user.")]
-        public async Task AssignRole(string rolename, [Remainder] string username = null)
+        public async Task AssignRole(string rolename, [Remainder] IGuildUser _user)
         {
             await Log.LogMessage(Context);
             if (await Permissions.IsServerStaff(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
             if (rolename == null) { await ReplyAsync("Please specify a role"); return; }
-            if (username == null) { await ReplyAsync("Please specify a user"); return; }
-            await Role.AssignRole(Context, rolename, username);
+            if (_user == null) { await ReplyAsync("Please specify a user"); return; }
+
+            IRole _role = Role.GetRole(Context, rolename);
+            if (_role == null) { await Log.LogMessage(Context, $"unable to find role {rolename}"); }
+
+            await Role.AssignRole(Context, _role, _user);
         }
         [Command("-role")]
         [Alias("revokerole")]
         [RequireContext(ContextType.Guild)]
         [RequireUserPermission(GuildPermission.ManageRoles)]
         [Summary("Revoke a role from a user.")]
-        public async Task RevokeRole(string rolename, [Remainder] string username = null)
+        public async Task RevokeRole(string rolename, [Remainder] IGuildUser _user)
         {
             await Log.LogMessage(Context);
             if (await Permissions.IsServerStaff(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
-            if (username == null) { await ReplyAsync("Please specify a user to verify"); return; }
-            //try
-            //{
-                await Role.RevokeRole(Context, rolename, username);
-                //await ReplyAsync("id:" + Context.Message.Id);
-                //await Task.Delay(500);
-    
-                //await Context.Message.AddReactionAsync("<:white_check_mark:327429986472689664>");
-                //await Context.Message.AddReactionAsync("<:white_check_mark:327429986472689664:>");
-                //await Context.Message.AddReactionAsync(":white_check_mark:327429986472689664");
-                //await Context.Message.AddReactionAsync(":white_check_mark:327429986472689664:");
-                //await Context.Message.AddReactionAsync(":white_check_mark:");
-                //await Context.Message.AddReactionAsync("<:white_check_mark:>");
+            if (rolename == null) { await ReplyAsync("Please specify a role"); return; }
+            if (_user == null) { await ReplyAsync("Please specify a user to verify"); return; }
+      
+            IRole _role = Role.GetRole(Context, rolename);
+            if (_role == null) { await Log.LogMessage(Context, $"unable to find role {rolename}"); }
 
-            //}
-            //catch
-            //{
-            //    await Context.Message.AddReactionAsync(":x:327434356916355074");
-            //}
+            await Role.RevokeRole(Context, _role, _user);
+
         }
         
 
