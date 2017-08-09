@@ -13,6 +13,7 @@ namespace RVBot.Core
 
         private static string defaultLogChannel = "log-rvbot";
         private static int autoLogCleanLimit = 7;
+        private static bool autoLogClean = false;
 
         private static ulong _logchannelid = 0;
         public static ulong LogChannelId
@@ -28,10 +29,11 @@ namespace RVBot.Core
 
         public static async Task SetAutoLogClean(ICommandContext context, bool autoclean)
         {
-            await Log.LogMessage(context, "Logging autocleaner enabled");
+            autoLogClean = autoclean;
+            await Log.LogMessage(context, autoclean ? "Logging autocleaner enabled" : "Logging autocleaner disabled");
             backgroundTask = Task.Run(async () =>
             {
-                while (true)
+                while (autoLogClean == true)
                 {
                     await CleanLog(_commandcontext);
                     await Task.Delay(logTimerInterval);
@@ -60,6 +62,13 @@ namespace RVBot.Core
                 await context.Channel.SendMessageAsync(String.Format("Logging set to channel <#{0}>", LogChannelId)); return; }
             await context.Channel.SendMessageAsync(String.Format("Channel `{0}` not found", channelname));
         }
+        //public static async Task SetLogChannel(ICommandContext context, IMessageChannel channel)
+        //{
+        //    LogChannelId = channel.Id;
+        //    await context.Channel.SendMessageAsync(String.Format("Logging set to channel <#{0}>", LogChannelId)); return;
+        //}
+
+
 
         // gets the predefined logging channel
         public static async Task<IMessageChannel> GetLogChannel(ICommandContext context)
