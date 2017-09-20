@@ -166,6 +166,7 @@ namespace RVBot.Core
             //IGuildUser user = await User.GetUser(context, _user);
             //IRole role = Role.GetRole(context, rolename);
             await _user.AddRoleAsync(_role);
+
         }
 
         public static async Task RevokeRole(ICommandContext context, IRole _role, IGuildUser _user)

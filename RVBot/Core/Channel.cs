@@ -16,11 +16,11 @@ namespace RVBot.Core
             foreach (IMessageChannel chan in chans) { if (chan.Id.Equals(id)) { return chan; } }
             return null;
         }
-
         public static async Task<IMessageChannel> GetChannel(ICommandContext context, string name)
         {
             ulong chanid = 0;
             string channelname = name.Trim('<', '>', '#');
+
             if (ulong.TryParse(channelname, out chanid))
             {
                 return await GetChannel(context, chanid);

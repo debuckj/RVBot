@@ -5,6 +5,7 @@ using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using RVBot.Core;
+using RVBot.Pegasy;
 using Microsoft.Extensions.DependencyInjection;
 
 public class Program
@@ -88,15 +89,21 @@ public class Program
         // Create a number to track where the prefix ends and the command begins
         int argPos = 0;
         // Determine if the message is a command, based on if it starts with '!' or a mention prefix
-        if (!(message.HasStringPrefix("rv!", ref argPos) || message.HasMentionPrefix(client.CurrentUser, ref argPos))) return;
+        if (!(message.HasStringPrefix("rvdev!", ref argPos) || message.HasMentionPrefix(client.CurrentUser, ref argPos))) return;
         // Create a Command Context
 
         var context = new CommandContext(client, message);
         // Execute the command. (result does not indicate a return value,
         // rather an object stating if the command executed succesfully)
         var result = await RVCommandService.Service.ExecuteAsync(context, argPos, map);
-        if (!result.IsSuccess)
+        if (result.IsSuccess)
+        {
+            await message.AddReactionAsync(new Emoji(EmojiHelper.white_check_mark));   
+        }
+        else
+        {
             await Log.LogMessage(context, result.ErrorReason);
+        }
         //await context.Channel.SendMessageAsync(result.ErrorReason);
 
     }

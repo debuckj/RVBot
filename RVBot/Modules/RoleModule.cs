@@ -61,7 +61,7 @@ namespace RVBot.Modules
         {
             await Log.LogMessage(Context);
             if (await Permissions.IsOfficer(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
-            if (_user == null) { await ReplyAsync("Please specify a user to query"); return; }
+            if (_user == null) { await ReplyAsync("Please specify a user to query."); return; }
             var roleTable = await Role.GetUserRoles(Context, _user);
             //if (userTable == "ERROR_NOUSERFOUND") { await ReplyAsync("No user found with name " + username); return; }
             await ReplyAsync(roleTable);
@@ -76,7 +76,7 @@ namespace RVBot.Modules
         {
             await Log.LogMessage(Context);
             if (await Permissions.IsOfficer(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
-            //if (username == null) { await ReplyAsync("Please specify a user to verify"); return; }
+            if (_user == null) { await ReplyAsync("Please specify a user to verify. Syntax: rv!vrv @username"); return; }
             await Role.VerifyRV(Context, _user);
         }
 
@@ -89,21 +89,21 @@ namespace RVBot.Modules
         {
             await Log.LogMessage(Context);
             if (await Permissions.IsOfficer(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
-            //if (username == null) { await ReplyAsync("Please specify a user to verify"); return; }
+            if (_user == null) { await ReplyAsync("Please specify a user to verify. Syntax: rv!vpv @username"); return; }
             await Role.VerifyPV(Context, _user);
         }
 
         [Command("+role")]
         [Alias("assignrole")]
         [RequireContext(ContextType.Guild)]
-        [RequireUserPermission(GuildPermission.ManageRoles)]
+        //[RequireUserPermission(GuildPermission.ManageRoles)]
         [Summary("Assign a role to a user.")]
         public async Task AssignRole(string rolename, [Remainder] IGuildUser _user)
         {
             await Log.LogMessage(Context);
-            if (await Permissions.IsServerStaff(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
-            if (rolename == null) { await ReplyAsync("Please specify a role"); return; }
-            if (_user == null) { await ReplyAsync("Please specify a user"); return; }
+            if (await Permissions.IsOfficer(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
+            if (rolename == null) { await ReplyAsync("Please specify a role. Syntax: rv!+role <role> @username"); return; }
+            if (_user == null) { await ReplyAsync("Please specify a user. Syntax: rv!+role <role> @username"); return; }
 
             IRole _role = Role.GetRole(Context, rolename);
             if (_role == null) { await Log.LogMessage(Context, $"unable to find role {rolename}"); }
@@ -113,14 +113,14 @@ namespace RVBot.Modules
         [Command("-role")]
         [Alias("revokerole")]
         [RequireContext(ContextType.Guild)]
-        [RequireUserPermission(GuildPermission.ManageRoles)]
+        //[RequireUserPermission(GuildPermission.ManageRoles)]
         [Summary("Revoke a role from a user.")]
         public async Task RevokeRole(string rolename, [Remainder] IGuildUser _user)
         {
             await Log.LogMessage(Context);
-            if (await Permissions.IsServerStaff(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
-            if (rolename == null) { await ReplyAsync("Please specify a role"); return; }
-            if (_user == null) { await ReplyAsync("Please specify a user to verify"); return; }
+            if (await Permissions.IsOfficer(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
+            if (rolename == null) { await ReplyAsync("Please specify a role.  Syntax: rv!-role <role> @username"); return; }         
+            if (_user == null) { await ReplyAsync("Please specify a user. Syntax: rv!-role <role> @username"); return; }
       
             IRole _role = Role.GetRole(Context, rolename);
             if (_role == null) { await Log.LogMessage(Context, $"unable to find role {rolename}"); }

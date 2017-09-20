@@ -83,9 +83,10 @@ namespace RVBot.Modules
             if (await Permissions.IsWarlord(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
             if (title == null) { await ReplyAsync("Please provide a title"); return; }
             if (message == null) { await ReplyAsync("Please provide a message"); return; }
-            IMessageChannel channel = await Channel.GetChannel(Context, "Announcements");
+
+            IMessageChannel channel = await Channel.GetChannel(Context, "announcements");
             IUserMessage umessage = null;
-            
+
             if (id == 0)
             {
                 IEnumerable<IMessage> messages = await channel.GetMessagesAsync(1).Flatten();          
