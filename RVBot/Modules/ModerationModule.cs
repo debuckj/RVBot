@@ -95,6 +95,34 @@ namespace RVBot.Modules
             await Log.LogMessage(Context, String.Format("user {0} banned by {1} for reason: {2}", _user.ToUsernameDiscriminatorAndNickname(), Context.User.ToUsernameDiscriminatorAndNickname(), reason));
         }
 
+        [Command("begonethot")]
+        //[Alias("unassigned")]
+        [RequireContext(ContextType.Guild)]
+        //[RequireUserPermission(GuildPermission.ManageRoles)]
+        [Summary("Kicks a thot.")]
+        public async Task KickThot([Summary("The thot to kick")] IGuildUser _user, [Remainder, Summary("The reason for the kick")] string reason = null)
+        {
+            await Log.LogMessage(Context);
+            if (await Permissions.IsOfficer(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
+
+            //if (reason == null) { await ReplyAsync("Please specify a reason"); return; }
+            if (await Permissions.IsOfficer(Context, _user)) { await ReplyAsync(String.Format("Unable to kick user {0}", _user.Mention)); return; }
+
+            await Context.Channel.SendMessageAsync("https://youtu.be/tyrKeThaEJM");
+
+            string kickpmmessage = String.Format("You were kicked from RV discord by {0} for reason: {1}{2}{3}{4}", Context.User.Mention, reason, Environment.NewLine, Environment.NewLine, "https://youtu.be/tyrKeThaEJM");
+            await User.SendMessage(_user, kickpmmessage);
+
+            await _user.KickAsync();
+
+            await ReplyAsync(String.Format("thot {0} kicked by {1} for reason: {2}", _user.Mention, Context.User.Mention, reason));
+            await Log.LogMessage(Context, String.Format("thot {0} kicked by {1} for reason: {2}", _user.ToUsernameDiscriminatorAndNickname(), Context.User.ToUsernameDiscriminatorAndNickname(), reason));
+        }
+
+
+
+        
+
 
         [Command("mute")]
         //[Alias("unassigned")]
