@@ -133,14 +133,14 @@ namespace RVBot.Core
         public static async Task VerifyRV(ICommandContext context, IGuildUser user)
         {
             //IGuildUser user = await User.GetUser(context, username);
-            IRole member = GetRole(context, "RV");
-            IRole pending = GetRole(context, "Pending");
+            IRole member = Role.GetRole(context, "RV");
+            IRole pending = Role.GetRole(context, "Pending");
 
             await Task.Delay(100);
 
             await user.AddRoleAsync(member);
             await user.RemoveRoleAsync(pending);
-            await Log.LogMessage(context, String.Format("verified user {0} - {1}", user.Nickname ?? user.Username, user.Id));
+            await Log.LogMessage(context, String.Format("verified user {0} - {1}", user.Nickname ?? user.Username, user.ToUsernameDiscriminatorAndNickname()));
             await context.Channel.SendMessageAsync(String.Format("User {0} verified", user.Mention));
         }
 
@@ -154,7 +154,7 @@ namespace RVBot.Core
 
             await user.AddRoleAsync(member);
             await user.RemoveRoleAsync(pending);
-            await Log.LogMessage(context, String.Format("verified user {0} - {1}", user.Nickname ?? user.Username, user.Id));
+            await Log.LogMessage(context, String.Format("verified user {0} - {1}", user.Nickname ?? user.Username, user.ToUsernameDiscriminatorAndNickname()));
             await context.Channel.SendMessageAsync(String.Format("User {0} verified", user.Mention));
         }
 

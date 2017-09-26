@@ -61,9 +61,12 @@
     <None Remove="Content\Images\BAN.gif" />
     <None Remove="Content\Images\BAN2.gif" />
     <None Remove="Content\Images\DIZZY.gif" />
+    <None Remove="Content\Images\dizzy.jpg" />
     <None Remove="Content\Images\DRACO.gif" />
+    <None Remove="Content\Images\hawki.jpg" />
     <None Remove="Content\Images\KICK.gif" />
     <None Remove="Content\Images\kick_original.gif" />
+    <None Remove="Content\Images\maniac.jpg" />
     <None Remove="Content\Images\RAIDTIME.jpg" />
     <None Remove="Content\Images\VOLT.jpeg" />
   </ItemGroup>
@@ -154,13 +157,22 @@
     <Content Include="Content\Images\DIZZY.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Images\dizzy.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Images\DRACO.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\hawki.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\KICK.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\kick_original.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\maniac.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\RAIDTIME.jpg">

@@ -78,14 +78,36 @@ namespace RVBot.Modules
             await Context.Channel.SendFileAsync("Content/Images/RAIDTIME.jpg", role.Mention);
         }
 
+
+
         [Command("master")]
         [Alias("dizzy")]
         [RequireContext(ContextType.Guild)]
-        [Summary("Get random cat pic to make u smile. ")]
+        [Summary("Get dizzy. ")]
         public async Task ShowDiZzY()
         {
             await Log.LogMessage(Context);
-            await Context.Channel.SendFileAsync("Content/Images/DIZZY.gif");
+            await Context.Channel.SendFileAsync("Content/Images/dizzy.jpg");
+        }
+
+        [Command("maniac")]
+        //[Alias("dizzy")]
+        [RequireContext(ContextType.Guild)]
+        [Summary("Get a maniac. ")]
+        public async Task ShowManiac()
+        {
+            await Log.LogMessage(Context);
+            await Context.Channel.SendFileAsync("Content/Images/maniac.jpg");
+        }
+
+        [Command("hawki")]
+        //[Alias("dizzy")]
+        [RequireContext(ContextType.Guild)]
+        [Summary("Get a hawki. ")]
+        public async Task ShowHawki()
+        {
+            await Log.LogMessage(Context);
+            await Context.Channel.SendFileAsync("Content/Images/hawki.jpg");
         }
 
 
