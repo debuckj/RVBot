@@ -2,11 +2,46 @@
 using Discord.Commands;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace RVBot.Core
 {
+    public class LogMessage
+    {
+        private string _timestamp;
+        public string timestamp
+        {
+            get { return _timestamp; }
+            set { _timestamp = value; }
+        }
+
+        private string _channel;
+        public string channel
+        {
+            get { return _channel; }
+            set { _channel = value; }
+        }
+
+        private string _user;
+        public string user
+        {
+            get { return _user; }
+            set { _user = value; }
+        }
+
+        private string _command;
+        public string command
+        {
+            get { return _command; }
+            set { _command = value; }
+        }
+    }
+
+
+
     public static class Log
     {
         //public enum LogFlag { Nom, Pos, Neg};
@@ -106,7 +141,7 @@ namespace RVBot.Core
             //if (intUserSpacer > strUser.Length) { strUserSpacer = new string(' ', (intUserSpacer - strUser.Length)); }
             //if (intCommandSpacer > strCommand.Length) { strCommandSpacer = new string(' ', (intCommandSpacer - strCommand.Length)); }
             //if (intChannelSpacer > strChannel.Length) { strChannelSpacer = new string(' ', (intChannelSpacer - strChannel.Length)); }
-            string strUserSpacer = (intUserSpacer > strUser.Length) ? new string(' ', (intUserSpacer - strUser.Length)): "";
+            string strUserSpacer = (intUserSpacer > strUser.Length) ? new string(' ', (intUserSpacer - strUser.Length)) : "";
             string strCommandSpacer = (intCommandSpacer > strCommand.Length) ? new string(' ', (intCommandSpacer - strCommand.Length)) : "";
             string strChannelSpacer = (intChannelSpacer > strChannel.Length) ? new string(' ', (intChannelSpacer - strChannel.Length)) : "";
 
@@ -128,7 +163,7 @@ namespace RVBot.Core
         public static async Task CleanLog(ICommandContext context)
         {
             IMessageChannel logchannel = await Channel.GetChannel(context, _logchannelid);
-            if (logchannel==null) { await Log.LogMessage(context,"Unable to determine loggingchannel"); return; }
+            if (logchannel == null) { await Log.LogMessage(context, "Unable to determine loggingchannel"); return; }
 
             var messages = await logchannel.GetMessagesAsync(100000).Flatten();
 
@@ -137,9 +172,62 @@ namespace RVBot.Core
             foreach (var msg in messages)
             {
                 DateTime dateLimit = DateTime.UtcNow.Subtract(TimeSpan.FromDays(days));
-                if (DateTime.Compare(msg.CreatedAt.DateTime, dateLimit) < 0) { loopcounter++; await msg.DeleteAsync();  }
+                if (DateTime.Compare(msg.CreatedAt.DateTime, dateLimit) < 0) { loopcounter++; await msg.DeleteAsync(); }
             }
             await Log.LogMessage(context, String.Format("CleanLog finished - {0} messages deleted", loopcounter));
+        }
+
+
+
+        //outputs amount of users for all roles or a specific role
+        public static async Task<string> Analyze(ICommandContext context)
+        {
+            IMessageChannel logchannel = await Log.GetLogChannel(context);
+            if (logchannel == null) { await Log.LogMessage(context, "Unable to determine loggingchannel"); return null; }
+
+            var messages = await logchannel.GetMessagesAsync(100000).Flatten();
+
+            int days = 30; int loopcounter = 0;
+            await Log.LogMessage(context, String.Format("Analyzing logs from the past {0} days", days));
+
+            List<IMessage> logmessages = new List<IMessage>();
+
+            foreach (var msg in messages)
+            {
+                DateTime dateLimit = DateTime.UtcNow.Subtract(TimeSpan.FromDays(days));
+                if (DateTime.Compare(msg.CreatedAt.DateTime, dateLimit) > 0)
+                {
+                    loopcounter++;
+                    logmessages.Add(msg);
+                }          
+            }
+
+            List<LogMessage> output = new List<LogMessage>();
+            foreach (var msg in logmessages)
+            {
+                string messagebody = msg.Content;
+                RegexOptions options = RegexOptions.None;
+                Regex regex = new Regex("[ ]{2,}", options);
+                messagebody = regex.Replace(messagebody, " ");
+                LogMessage logmessage = new LogMessage();
+                logmessage.timestamp = messagebody.Split(' ')[0];
+                logmessage.channel = messagebody.Split(' ')[1];
+                logmessage.user = messagebody.Split(' ')[2];
+                logmessage.command = messagebody.Split(' ')[3];
+                output.Add(logmessage);
+            }
+
+            var textTable = Temp.ToString((
+            from msg in output
+            orderby msg.command
+            group msg by new { msg.command, msg.user } into c
+            select new
+            {
+                Command = c.Key.command,
+                User = c.Key.user,
+                Count = c.Count()
+            }).ToList());
+            return textTable;
         }
 
 

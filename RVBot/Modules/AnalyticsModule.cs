@@ -1,0 +1,32 @@
+﻿using Discord;
+using Discord.Commands;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using RVBot.Core;
+
+namespace RVBot.Modules
+{
+    public class AnalyticsModule : ModuleBase
+    {
+
+
+
+        [Command("analyzelog")]
+        //[Alias("unassigned")]
+        [RequireContext(ContextType.Guild)]
+        //[RequireUserPermission(GuildPermission.ManageRoles)]
+        [Summary("Analyze bot log.")]
+        public async Task AnalyzeLog()
+        {
+            await Log.LogMessage(Context);
+            if (await Permissions.IsServerStaff(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
+
+            var roleTable = await Log.Analyze(Context);
+            await Context.Channel.SendMessageSplitCodeblockAsync(roleTable);
+        }
+
+    }
+}
