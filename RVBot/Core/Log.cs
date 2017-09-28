@@ -218,15 +218,16 @@ namespace RVBot.Core
             }
 
             var textTable = Temp.ToString((
-            from msg in output
-            orderby msg.command
+            from msg in output        
             group msg by new { msg.command, msg.user } into c
+            orderby c.Key.command ascending, c.Count() descending
             select new
             {
                 Command = c.Key.command,
                 User = c.Key.user,
                 Count = c.Count()
             }).ToList());
+            
             return textTable;
         }
 
