@@ -14,6 +14,9 @@ public class Program
     private DiscordSocketClient client;
     private IServiceProvider map;
 
+    string token = Environment.GetEnvironmentVariable("RVBot_Token");
+    string prefix = Environment.GetEnvironmentVariable("RVBot_Prefix");
+
     // Convert our sync main to an async main.
     public static void Main(string[] args) =>
         new Program().Start().GetAwaiter().GetResult();
@@ -36,7 +39,7 @@ public class Program
             return Task.CompletedTask;
         };
 
-        string token = Environment.GetEnvironmentVariable("RVBot_Token");
+
 
         map = new ServiceCollection().BuildServiceProvider();
 
@@ -89,7 +92,7 @@ public class Program
         // Create a number to track where the prefix ends and the command begins
         int argPos = 0;
         // Determine if the message is a command, based on if it starts with '!' or a mention prefix
-        if (!(message.HasStringPrefix("rv!", ref argPos) || message.HasMentionPrefix(client.CurrentUser, ref argPos))) return;
+        if (!(message.HasStringPrefix(prefix, ref argPos) || message.HasMentionPrefix(client.CurrentUser, ref argPos))) return;
         // Create a Command Context
 
         var context = new CommandContext(client, message);
