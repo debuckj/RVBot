@@ -3,6 +3,7 @@ using Discord.Commands;
 using System.Threading.Tasks;
 using RVBot.Core;
 using System.Collections.Generic;
+using System;
 
 namespace RVBot.Modules
 {
@@ -16,8 +17,8 @@ namespace RVBot.Modules
         public async Task PostInfoMessage(string title = null, [Remainder] string message = null)
         {
             await Log.LogMessage(Context);
-            if (await Permissions.IsWarlord(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
-            if (title == null) { await ReplyAsync("Please provide a title, make sure your title is between quotes (\")"); return; }
+            if (await Permissions.IsWarlord(Context) == false) { throw new UnauthorizedAccessException(); }
+            if (title == null) { await ReplyAsync("Please provide a title, make sure your title is between quotes (\")"); }
             if (message == null) { await ReplyAsync("Please provide a message"); return; }
             IMessageChannel channel = await Channel.GetChannel(Context, "Info");
             await channel.SendMessageAsync(Message.FormatInfoMessage(Context, title, message));
@@ -32,7 +33,7 @@ namespace RVBot.Modules
         public async Task EditInfoMessage(string title = null, string message = null, [Remainder, Summary("Optional message id to edit")] ulong id = 0)
         {
             await Log.LogMessage(Context);
-            if (await Permissions.IsWarlord(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
+            if (await Permissions.IsWarlord(Context) == false) { throw new UnauthorizedAccessException(); }
             if (title == null) { await ReplyAsync("Please provide a title"); return; }
             if (message == null) { await ReplyAsync("Please provide a message"); return; }
             IMessageChannel channel = await Channel.GetChannel(Context, "Info");
@@ -64,7 +65,7 @@ namespace RVBot.Modules
         public async Task PostAnnouncement(string title = null, [Remainder] string message = null)
         {
             await Log.LogMessage(Context);
-            if (await Permissions.IsWarlord(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
+            if (await Permissions.IsWarlord(Context) == false) { throw new UnauthorizedAccessException(); }
             if (title == null) { await ReplyAsync("Please provide a title, make sure your title is between quotes (\")"); return; }
             //if (message == null) { await ReplyAsync("Please provide a message"); return; }
             IMessageChannel channel = await Channel.GetChannel(Context, "Announcements");
@@ -80,7 +81,7 @@ namespace RVBot.Modules
         public async Task EditAnnouncement(string title = null, string message = null, [Remainder, Summary("Optional message id to edit")] ulong id = 0)
         {
             await Log.LogMessage(Context);
-            if (await Permissions.IsWarlord(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
+            if (await Permissions.IsWarlord(Context) == false) { throw new UnauthorizedAccessException(); }
             if (title == null) { await ReplyAsync("Please provide a title"); return; }
             if (message == null) { await ReplyAsync("Please provide a message"); return; }
 

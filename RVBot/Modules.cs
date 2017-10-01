@@ -35,7 +35,7 @@ namespace RVBot
         public async Task Purge()
         {
             await Log.LogMessage(Context);
-            if (await Permissions.IsServerStaff(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
+            if (await Permissions.IsServerStaff(Context) == false) { throw new UnauthorizedAccessException(); }
             string statusMessage;
             int messageCount = 0; int loopcounter = 0; int statusUpdateDelay = 10; int statusDelay = 0;
 
@@ -87,7 +87,7 @@ namespace RVBot
         public async Task SendRoleUserPM(string roleName = null, [Remainder] string message = null)
         {
             await Log.LogMessage(Context);
-            if (await Permissions.IsServerStaff(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
+            if (await Permissions.IsServerStaff(Context) == false) { throw new UnauthorizedAccessException(); }
 
             if (roleName == null) { await Context.Channel.SendMessageAsync("Please provide a role"); return; }
             var statusMsg = await Context.Channel.SendMessageAsync("Fetching users");

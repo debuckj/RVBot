@@ -19,7 +19,7 @@ namespace RVBot.Modules
         public async Task Draw([Remainder] int amount=1)
         {
             await Log.LogMessage(Context);
-            if (await Permissions.IsServerStaff(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
+            if (await Permissions.IsServerStaff(Context) == false) { throw new UnauthorizedAccessException(); }
             await Giveaway.Draw(Context, "Giveaway Participant", amount);
         }
 
@@ -31,7 +31,7 @@ namespace RVBot.Modules
         public async Task DrawMember([Remainder] int amount = 1)
         {
             await Log.LogMessage(Context);
-            if (await Permissions.IsServerStaff(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
+            if (await Permissions.IsServerStaff(Context) == false) { throw new UnauthorizedAccessException(); }
             await Giveaway.Draw(Context, "Member", amount);
         }
 
@@ -40,7 +40,7 @@ namespace RVBot.Modules
         public async Task ARNG([Summary("range indicator")] int range, [Remainder, Summary("sequencer")] int loop)
         {
             await Log.LogMessage(Context);
-            if (await Permissions.IsServerStaff(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
+            if (await Permissions.IsServerStaff(Context) == false) { throw new UnauthorizedAccessException(); }
             var roleTable = await Util.Util.AnalyzeRNG(Context, range, loop);
             if (roleTable != null) { await Context.Channel.SendMessageSplitCodeblockAsync(roleTable); }
 
@@ -50,7 +50,7 @@ namespace RVBot.Modules
         public async Task RNG([Remainder,] int range)
         {
             await Log.LogMessage(Context);
-            if (await Permissions.IsServerStaff(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
+            if (await Permissions.IsServerStaff(Context) == false) { throw new UnauthorizedAccessException(); }
             await ReplyAsync(Util.Util.GetCryptoRandom(range).ToString());
         }
 

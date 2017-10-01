@@ -12,28 +12,28 @@ namespace RVBot.Core
     public class LogMessage
     {
         private string _timestamp;
-        public string timestamp
+        public string Timestamp
         {
             get { return _timestamp; }
             set { _timestamp = value; }
         }
 
         private string _channel;
-        public string channel
+        public string Channel
         {
             get { return _channel; }
             set { _channel = value; }
         }
 
         private string _user;
-        public string user
+        public string User
         {
             get { return _user; }
             set { _user = value; }
         }
 
         private string _command;
-        public string command
+        public string Command
         {
             get { return _command; }
             set { _command = value; }
@@ -210,21 +210,21 @@ namespace RVBot.Core
                 Regex regex = new Regex("[ ]{2,}", options);
                 messagebody = regex.Replace(messagebody, " ");
                 LogMessage logmessage = new LogMessage();
-                logmessage.timestamp = messagebody.Split(' ')[0];
-                logmessage.channel = messagebody.Split(' ')[1];
-                logmessage.user = messagebody.Split(' ')[2];
-                logmessage.command = messagebody.Split(' ')[3];
+                logmessage.Timestamp = messagebody.Split(' ')[0];
+                logmessage.Channel = messagebody.Split(' ')[1];
+                logmessage.User = messagebody.Split(' ')[2];
+                logmessage.Command = messagebody.Split(' ')[3];
                 output.Add(logmessage);
             }
 
             var textTable = Temp.ToString((
             from msg in output        
-            group msg by new { msg.command, msg.user } into c
-            orderby c.Key.command ascending, c.Count() descending
+            group msg by new { msg.Command, msg.User } into c
+            orderby c.Key.Command ascending, c.Count() descending
             select new
             {
-                Command = c.Key.command,
-                User = c.Key.user,
+                Command = c.Key.Command,
+                User = c.Key.User,
                 Count = c.Count()
             }).ToList());
             

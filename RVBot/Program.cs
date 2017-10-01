@@ -98,16 +98,34 @@ public class Program
         var context = new CommandContext(client, message);
         // Execute the command. (result does not indicate a return value,
         // rather an object stating if the command executed succesfully)
+
+
         var result = await RVCommandService.Service.ExecuteAsync(context, argPos, map);
         if (result.IsSuccess)
         {
-            await message.AddReactionAsync(new Emoji(EmojiHelper.white_check_mark));   
+            await message.AddReactionAsync(new Emoji(EmojiHelper.white_check_mark));
         }
+        //else if (!result.IsSuccess && result.Error == CommandError.UnmetPrecondition)
+        //{
+        //    await message.AddReactionAsync(new Emoji(EmojiHelper.no_entry));
+        //}
         else
         {
+
             await Log.LogMessage(context, result.ErrorReason);
         }
         //await context.Channel.SendMessageAsync(result.ErrorReason);
+
+
+        var executeResult = result as ExecuteResult? ?? new ExecuteResult();
+        if (result.Error == CommandError.Exception && result is ExecuteResult)
+        {
+            if (executeResult.Exception.GetType() == typeof(UnauthorizedAccessException))
+            {
+                await message.AddReactionAsync(new Emoji(EmojiHelper.no_entry));
+            }
+
+        }
 
     }
 }

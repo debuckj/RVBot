@@ -12,8 +12,6 @@ namespace RVBot.Modules
     public class AnalyticsModule : ModuleBase
     {
 
-
-
         [Command("analyzelog")]
         //[Alias("unassigned")]
         [RequireContext(ContextType.Guild)]
@@ -22,7 +20,7 @@ namespace RVBot.Modules
         public async Task AnalyzeLog()
         {
             await Log.LogMessage(Context);
-            if (await Permissions.IsServerStaff(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
+            if (await Permissions.IsServerStaff(Context) == false) { throw new UnauthorizedAccessException(); }
 
             var roleTable = await Log.Analyze(Context);
             await Context.Channel.SendMessageSplitCodeblockAsync(roleTable);

@@ -22,7 +22,7 @@ namespace RVBot.Modules
         public async Task KickUser([Summary("The user to kick")] IGuildUser _user, [Remainder, Summary("The reason for the kick")] string reason = null)
         {
             await Log.LogMessage(Context);
-            if (await Permissions.IsOfficer(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
+            if (await Permissions.IsOfficer(Context) == false) { throw new UnauthorizedAccessException(); }
 
             //if (reason == null) { await ReplyAsync("Please specify a reason"); return; }
             if (await Permissions.IsOfficer(Context, _user)) { await ReplyAsync(String.Format("Unable to kick user {0}", _user.Mention)); return; }
@@ -46,7 +46,7 @@ namespace RVBot.Modules
         public async Task BootUser([Summary("The user to kick")] IGuildUser _user, [Remainder, Summary("The reason for the kick")] string reason = null)
         {
             await Log.LogMessage(Context);
-            if (await Permissions.IsOfficer(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
+            if (await Permissions.IsOfficer(Context) == false) { throw new UnauthorizedAccessException(); }
 
             //if (user == null) { await ReplyAsync("Please specify a user"); return; }
             if (reason == null) { await ReplyAsync("Please specify a reason"); return; }
@@ -75,7 +75,7 @@ namespace RVBot.Modules
         public async Task BanUser([Summary("The user to ban")]  IGuildUser _user, [Remainder, Summary("The reason for the ban")] string reason = null)
         {
             await Log.LogMessage(Context);
-            if (await Permissions.IsOfficer(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
+            if (await Permissions.IsOfficer(Context) == false) { throw new UnauthorizedAccessException(); }
 
             //if (user == null) { await ReplyAsync("Please specify a user"); return; }
             if (reason == null) { await ReplyAsync("Please specify a reason"); return; }
@@ -103,7 +103,7 @@ namespace RVBot.Modules
         public async Task KickThot([Summary("The thot to kick")] IGuildUser _user, [Remainder, Summary("The reason for the kick")] string reason = null)
         {
             await Log.LogMessage(Context);
-            if (await Permissions.IsOfficer(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
+            if (await Permissions.IsOfficer(Context) == false) { throw new UnauthorizedAccessException(); }
 
             //if (reason == null) { await ReplyAsync("Please specify a reason"); return; }
             if (await Permissions.IsOfficer(Context, _user)) { await ReplyAsync(String.Format("Unable to kick user {0}", _user.Mention)); return; }
@@ -132,7 +132,7 @@ namespace RVBot.Modules
         public async Task Mute([Summary("The user to kick")] string user = null, [Remainder, Summary("The reason for the kick")] string reason = null)
         {
             await Log.LogMessage(Context);
-            if (await Permissions.IsOfficer(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
+            if (await Permissions.IsOfficer(Context) == false) { throw new UnauthorizedAccessException(); }
             await ReplyAsync(String.Format("function not implemented"));
         }
 

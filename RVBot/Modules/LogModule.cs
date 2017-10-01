@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.Commands;
 using RVBot.Core;
+using System;
 using System.Threading.Tasks;
 
 
@@ -14,7 +15,7 @@ namespace RVBot
         [RequireUserPermission(GuildPermission.Administrator)]
         public async Task SetLogChannelCommand([Remainder, Summary("Sets the channel to log to")] string channelname = null)
         {
-            if (await Permissions.IsServerStaff(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
+            if (await Permissions.IsServerStaff(Context) == false) { throw new UnauthorizedAccessException(); }
             if (channelname == null) { await Context.Channel.SendMessageAsync("Please provide a channel"); return; }
             await Log.SetLogChannel(Context, channelname);
         }
@@ -24,7 +25,7 @@ namespace RVBot
         [RequireUserPermission(GuildPermission.Administrator)]
         public async Task LogMessageCommand([Remainder, Summary("The message to log")] string logmessage = null)
         {
-            if (await Permissions.IsServerStaff(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
+            if (await Permissions.IsServerStaff(Context) == false) { throw new UnauthorizedAccessException(); }
             if (logmessage == null) { await Context.Channel.SendMessageAsync("Please provide something to log"); return; }
             await Log.LogMessage(Context, logmessage);
         }
@@ -34,7 +35,7 @@ namespace RVBot
         [RequireUserPermission(GuildPermission.Administrator)]
         public async Task SetAutoLogCleanCommand([Remainder, Summary("Sets the channel to log to")] string yesno = null)
         {
-            if (await Permissions.IsServerStaff(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
+            if (await Permissions.IsServerStaff(Context) == false) { throw new UnauthorizedAccessException(); }
             bool byesno;
             if ((yesno == null) || (!bool.TryParse(yesno, out byesno))) { await Context.Channel.SendMessageAsync("Please provide yes or no"); return; }
             await Log.SetAutoLogClean(Context, byesno);
@@ -45,7 +46,7 @@ namespace RVBot
         [RequireUserPermission(GuildPermission.Administrator)]
         public async Task SetAutoLogCleanLimitCommand([Remainder, Summary("Sets the amount of days to keep logs off")] int days = 0)
         {
-            if (await Permissions.IsServerStaff(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
+            if (await Permissions.IsServerStaff(Context) == false) { throw new UnauthorizedAccessException(); }
             if (days>=14) { await Context.Channel.SendMessageAsync("Please provide a value under 14 days"); return; }
             await Log.SetAutoLogCleanLimit(Context, days);
         }
@@ -55,7 +56,7 @@ namespace RVBot
         [RequireUserPermission(GuildPermission.Administrator)]
         public async Task CleanLogCommand()
         {
-            if (await Permissions.IsServerStaff(Context) == false) { await ReplyAsync("You are not authorised to use this command"); return; }
+            if (await Permissions.IsServerStaff(Context) == false) { throw new UnauthorizedAccessException(); }
             await Log.CleanLog(Context);
         }
     }
