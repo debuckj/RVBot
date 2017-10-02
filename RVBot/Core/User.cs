@@ -30,7 +30,9 @@ namespace RVBot.Core
             var users = await context.Guild.GetUsersAsync();
             foreach (IGuildUser user in users)
             {
-                if (user.Nickname != null) { if (user.Nickname.Equals(_username, StringComparison.CurrentCultureIgnoreCase)) { return user; } }
+                if (user.Nickname != null)
+                { if (user.Nickname.Equals(_username, StringComparison.CurrentCultureIgnoreCase)) { return user; } }
+
                 if ((user.ToUsernameDiscriminatorAndNickname().Equals(_username, StringComparison.CurrentCultureIgnoreCase)) ||
                     (user.Id.ToString().Equals(_username, StringComparison.CurrentCultureIgnoreCase)) ||
                     (user.Username.Equals(_username, StringComparison.CurrentCultureIgnoreCase)))

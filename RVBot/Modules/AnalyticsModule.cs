@@ -25,6 +25,5 @@ namespace RVBot.Modules
             var roleTable = await Log.Analyze(Context, searchparam);
             await Context.Channel.SendMessageSplitCodeblockAsync(roleTable);
         }
-
     }
 }

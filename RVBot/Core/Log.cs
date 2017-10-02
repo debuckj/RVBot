@@ -178,7 +178,6 @@ namespace RVBot.Core
         }
 
 
-
         //outputs amount of users for all roles or a specific role
         public static async Task<string> Analyze(ICommandContext context, string searchparam)
         {
@@ -221,12 +220,9 @@ namespace RVBot.Core
             if (searchparam != null)
             {
                 IGuildUser usersearchparam = await User.GetUser(context, searchparam);
-                if (usersearchparam != null) { output = output.FindAll(x => x.User == usersearchparam.ToString()); goto returnoutput; }
-
+                if (usersearchparam != null) { output = output.FindAll(x => x.User.Contains(usersearchparam.ToString())); goto returnoutput; }
                 output = output.FindAll(x => x.Command == searchparam);
-
             }
-
 
     returnoutput:
             var textTable = Temp.ToString((
@@ -242,8 +238,5 @@ namespace RVBot.Core
             
             return textTable;
         }
-
-
-
     }
 }
