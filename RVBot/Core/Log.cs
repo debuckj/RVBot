@@ -180,7 +180,7 @@ namespace RVBot.Core
 
 
         //outputs amount of users for all roles or a specific role
-        public static async Task<string> Analyze(ICommandContext context)
+        public static async Task<string> Analyze(ICommandContext context, string searchparam)
         {
             IMessageChannel logchannel = await Log.GetLogChannel(context);
             if (logchannel == null) { await Log.LogMessage(context, "Unable to determine loggingchannel"); return null; }
@@ -203,6 +203,7 @@ namespace RVBot.Core
             }
 
             List<LogMessage> output = new List<LogMessage>();
+
             foreach (var msg in logmessages)
             {
                 string messagebody = msg.Content;
@@ -217,6 +218,17 @@ namespace RVBot.Core
                 output.Add(logmessage);
             }
 
+            if (searchparam != null)
+            {
+                IGuildUser usersearchparam = await User.GetUser(context, searchparam);
+                if (usersearchparam != null) { output = output.FindAll(x => x.User == usersearchparam.ToString()); goto returnoutput; }
+
+                output = output.FindAll(x => x.Command == searchparam);
+
+            }
+
+
+    returnoutput:
             var textTable = Temp.ToString((
             from msg in output        
             group msg by new { msg.Command, msg.User } into c

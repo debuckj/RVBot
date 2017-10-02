@@ -17,12 +17,12 @@ namespace RVBot.Modules
         [RequireContext(ContextType.Guild)]
         //[RequireUserPermission(GuildPermission.ManageRoles)]
         [Summary("Analyze bot log.")]
-        public async Task AnalyzeLog()
+        public async Task AnalyzeLog(string searchparam = null)
         {
             await Log.LogMessage(Context);
             if (await Permissions.IsServerStaff(Context) == false) { throw new UnauthorizedAccessException(); }
 
-            var roleTable = await Log.Analyze(Context);
+            var roleTable = await Log.Analyze(Context, searchparam);
             await Context.Channel.SendMessageSplitCodeblockAsync(roleTable);
         }
 

@@ -101,32 +101,44 @@ public class Program
 
 
         var result = await RVCommandService.Service.ExecuteAsync(context, argPos, map);
+        var executeResult = result as ExecuteResult? ?? new ExecuteResult();
+
+
         if (result.IsSuccess)
         {
             await message.AddReactionAsync(new Emoji(EmojiHelper.white_check_mark));
         }
-        //else if (!result.IsSuccess && result.Error == CommandError.UnmetPrecondition)
-        //{
-        //    await message.AddReactionAsync(new Emoji(EmojiHelper.no_entry));
-        //}
-        else
+        else if (!result.IsSuccess && result.Error == CommandError.UnmetPrecondition)
         {
-
+            await message.AddReactionAsync(new Emoji(EmojiHelper.no_entry));
             await Log.LogMessage(context, result.ErrorReason);
         }
-        //await context.Channel.SendMessageAsync(result.ErrorReason);
-
-
-        var executeResult = result as ExecuteResult? ?? new ExecuteResult();
-        if (result.Error == CommandError.Exception && result is ExecuteResult)
+        else if (!result.IsSuccess && result.Error == CommandError.BadArgCount)
+        {
+            await message.AddReactionAsync(new Emoji(EmojiHelper.warning));
+            await Log.LogMessage(context, result.ErrorReason);
+        }
+        else if (result.Error == CommandError.Exception && result is ExecuteResult)
         {
             if (executeResult.Exception.GetType() == typeof(UnauthorizedAccessException))
             {
                 await message.AddReactionAsync(new Emoji(EmojiHelper.no_entry));
+                await context.Channel.SendMessageAsync("You are not authorised to use this command");
+                await Log.LogMessage(context, result.ErrorReason);
+                return;
+            }
+            else
+            {
+                await Log.LogMessage(context, result.ErrorReason);
+                await message.AddReactionAsync(new Emoji(EmojiHelper.warning));
             }
 
         }
-
+        else if (!result.IsSuccess)
+        {
+            await Log.LogMessage(context, result.ErrorReason);
+            await message.AddReactionAsync(new Emoji(EmojiHelper.warning));
+        }
     }
 }
 

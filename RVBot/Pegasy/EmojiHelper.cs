@@ -11,6 +11,7 @@ namespace RVBot.Pegasy
     {
         public const string white_check_mark = "✅";
         public const string no_entry = "⛔";
+        public const string warning = "⚠";
 
         public static string ToMessageString(this GuildEmote emoji) => $"<{emoji.ToIdString()}>";
         public static string ToIdString(this GuildEmote emoji) => $":{emoji.Name}:{emoji.Id}";
