@@ -25,14 +25,14 @@ namespace RVBot.Modules
             WorldState ws = await wc.GetWorldStateAsync("pc/");
 
             CetusCycle cc = ws.WS_CetusCycle;
-            output = String.Format("It's currently **{0}**time in Cetus for another {1}", cc.TimeOfDay(), cc.timeLeft);
+            output = String.Format("It's currently **{0}time** in Cetus for another **{1}**", cc.TimeOfDay(), cc.timeLeft);
 
             List<SyndicateMission> missions = ws.WS_SyndicateMissions;
             SyndicateMission mission = missions.FirstOrDefault(x => x.Syndicate.Equals("Ostrons"));
             if (mission != null)
             {
                 output += Environment.NewLine;
-                output += String.Format("Bounties reset in {0}", mission.eta);
+                output += String.Format("**Bounties** reset in **{0}**", mission.eta);
             }
 
             eb.WithTitle("Cetus info");
