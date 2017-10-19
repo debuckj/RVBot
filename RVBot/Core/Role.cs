@@ -136,6 +136,9 @@ namespace RVBot.Core
             IRole member = Role.GetRole(context, "RV");
             IRole pending = Role.GetRole(context, "Pending");
 
+            if (member == null) { await Log.LogMessage(context, "unable to retrieve role RV"); await context.Channel.SendMessageAsync("unable to retrieve role RV"); return; }
+            if (pending == null) { await Log.LogMessage(context, "unable to retrieve role Pending"); await context.Channel.SendMessageAsync("unable to retrieve role Pending"); return; }
+
             await Task.Delay(100);
 
             await user.AddRoleAsync(member);
@@ -149,6 +152,9 @@ namespace RVBot.Core
             //IGuildUser user = await User.GetUser(context, username);
             IRole member = Role.GetRole(context, "PV");
             IRole pending = Role.GetRole(context, "Pending");
+
+            if (member == null) { await Log.LogMessage(context, "unable to retrieve role PV"); await context.Channel.SendMessageAsync("unable to retrieve role PV"); return; }
+            if (pending == null) { await Log.LogMessage(context, "unable to retrieve role Pending"); await context.Channel.SendMessageAsync("unable to retrieve role Pending"); return; }
 
             await Task.Delay(100);
 

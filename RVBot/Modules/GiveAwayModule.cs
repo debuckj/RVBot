@@ -37,6 +37,8 @@ namespace RVBot.Modules
 
 
         [Command("arng"), Summary("analyze rng procedure based on range and iterations given")]
+        [RequireContext(ContextType.Guild)]
+        [RequireUserPermission(GuildPermission.Administrator)]
         public async Task ARNG([Summary("range indicator")] int range, [Remainder, Summary("sequencer")] int loop)
         {
             await Log.LogMessage(Context);
@@ -47,6 +49,8 @@ namespace RVBot.Modules
         }
 
         [Command("rng"), Summary("creates random number based on range given")]
+        [RequireContext(ContextType.Guild)]
+        [RequireUserPermission(GuildPermission.Administrator)]
         public async Task RNG([Remainder,] int range)
         {
             await Log.LogMessage(Context);

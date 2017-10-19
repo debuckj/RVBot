@@ -15,7 +15,7 @@ namespace RVBot.Modules
         [Command("analyzelog")]
         //[Alias("unassigned")]
         [RequireContext(ContextType.Guild)]
-        //[RequireUserPermission(GuildPermission.ManageRoles)]
+        [RequireUserPermission(GuildPermission.ManageRoles)]
         [Summary("Analyze bot log.")]
         public async Task AnalyzeLog(string searchparam = null)
         {

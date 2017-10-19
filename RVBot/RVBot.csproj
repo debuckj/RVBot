@@ -183,6 +183,10 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\warframe-net-master\WarframeNET.csproj" />
+  </ItemGroup>
+
 
 
   <ItemGroup>

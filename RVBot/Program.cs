@@ -111,6 +111,7 @@ public class Program
         else if (!result.IsSuccess && result.Error == CommandError.UnmetPrecondition)
         {
             await message.AddReactionAsync(new Emoji(EmojiHelper.no_entry));
+            await context.Channel.SendMessageAsync("You are not authorised to use this command");
             await Log.LogMessage(context, result.ErrorReason);
         }
         else if (!result.IsSuccess && result.Error == CommandError.BadArgCount)
