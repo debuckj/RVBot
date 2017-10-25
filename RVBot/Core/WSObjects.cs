@@ -8,7 +8,7 @@ using WarframeNET;
 
 namespace RVBot.Core
 {
-    public static class WorldStateObjects
+    public static class WSObjects
     {
         //private static List<Alert> cachedAlerts;
 
