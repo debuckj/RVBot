@@ -16,6 +16,10 @@ namespace RVBot.Core
         private static string chanDefaultSorties = "sorties";
         private static string chanDefaultFissures = "fissures";
 
+        private static WSNewsStreamer streamerNews;
+
+
+
         public static IMessageChannel chanNews { get; set; }
         public static IMessageChannel chanSorties { get; set; }
         public static IMessageChannel chanFissures { get; set; }
@@ -41,13 +45,21 @@ namespace RVBot.Core
         {
             _bAutoBuild = AutoBuild;
             await Log.LogMessage(context, bAutoBuild ? "AutoBuildDailies enabled" : "AutoBuildDailies disabled");
+
+            await Channel.ClearChannel(chanNews);
+            streamerNews = new WSNewsStreamer(chanNews);
+
+
             AutoBuildBackgroundTask = Task.Run(async () =>
             {
                 while (bAutoBuild == true)
                 {
                     WarframeClient wc = new WarframeClient();
                     WorldState ws = await wc.GetWorldStateAsync("pc/");
-                    await Populate(ws);
+                    //await Populate(ws);
+
+                    await streamerNews.Refresh(ws);
+                    
                     await Task.Delay(AutoBuildInterval);
                 }
             });
@@ -71,8 +83,11 @@ namespace RVBot.Core
             await WorldStateObjects.DisplayFissures(ws, chanFissures);
 
 
-
         }
+
+
+
+
 
     }
 

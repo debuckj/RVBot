@@ -10,6 +10,17 @@ namespace RVBot.Core
 {
     public static class WorldStateObjects
     {
+        //private static List<Alert> cachedAlerts;
+
+
+        public static async Task GetNews(WorldState ws)
+        {
+
+
+        }
+
+
+
         public static async Task DisplayNews(WorldState ws, IMessageChannel channel)
         {
             List<NewsArticle> news = ws.WS_News;
@@ -52,6 +63,11 @@ namespace RVBot.Core
             }
             eb.WithDescription(sr);
             eb.WithColor(Color.Red);
+            EmbedFooterBuilder footer = new EmbedFooterBuilder();
+            footer.WithIconUrl("https://images-ext-1.discordapp.net/external/hAQVdE0EHRmMzbb965tL65KqD4wHXwj82tiI0C0_Mac/%3Fsize%3D128/https/cdn.discordapp.com/icons/166488311458824193/96a7f1b793bdf524165b0f5f62d32126.png?width=80&height=80");
+            footer.WithText("Remnants of the Void");
+            eb.WithFooter(footer);
+            eb.WithTimestamp(new DateTimeOffset(DateTime.Now));
             await channel.SendMessageAsync("", false, eb);
         }
 
@@ -65,10 +81,17 @@ namespace RVBot.Core
                 eb.WithTitle(String.Format("{0} - {1}", fis.Tier, fis.MissionType));
                 eb.WithDescription(String.Format("{0} - {1} - {2}", fis.eta, fis.Node, fis.Enemy));
                 eb.WithColor(Color.Red);
+                EmbedFooterBuilder footer = new EmbedFooterBuilder();
+                footer.WithIconUrl("https://images-ext-1.discordapp.net/external/hAQVdE0EHRmMzbb965tL65KqD4wHXwj82tiI0C0_Mac/%3Fsize%3D128/https/cdn.discordapp.com/icons/166488311458824193/96a7f1b793bdf524165b0f5f62d32126.png?width=80&height=80");
+                footer.WithText("Remnants of the Void");
+                eb.WithFooter(footer);
+                eb.WithTimestamp(new DateTimeOffset(DateTime.Now));
                 await channel.SendMessageAsync("", false, eb);
             }
-
         }
+
+
+
 
 
 
