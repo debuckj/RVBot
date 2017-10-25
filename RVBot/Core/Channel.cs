@@ -30,5 +30,12 @@ namespace RVBot.Core
             foreach (IMessageChannel chan in chans) { if (chan.Name.Equals(channelname.Replace("#", ""), StringComparison.CurrentCultureIgnoreCase)) { return chan; } }
             return null;
         }
+
+        public static async Task ClearChannel(IMessageChannel channel)
+        {
+            var messages = await channel.GetMessagesAsync(100).Flatten();
+            await channel.DeleteMessagesAsync(messages);
+        }
+
     }
 }

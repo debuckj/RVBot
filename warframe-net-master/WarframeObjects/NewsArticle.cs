@@ -39,10 +39,31 @@ namespace WarframeNET
         /// </summary>
         public DateTime Date { get; set; }
 
+
         /// <summary>
         /// Link to an image if any.
         /// </summary>
         public string ImageLink { get; set; }
+
+        public string FormattedEta()
+        {
+            string x1 = ETA.Split(' ')[0];
+
+            if (x1.EndsWith("d"))
+            {
+                return x1;
+            }
+            else if(x1.EndsWith("h"))
+            {
+                string x2 = ETA.Split(' ')[1];
+                return x1 + " " + x2;
+            }
+            else
+            {
+                return x1;
+            }
+
+        }
 
         internal NewsArticle() { }
     }

@@ -141,8 +141,8 @@ namespace RVBot.Core
             //if (intUserSpacer > strUser.Length) { strUserSpacer = new string(' ', (intUserSpacer - strUser.Length)); }
             //if (intCommandSpacer > strCommand.Length) { strCommandSpacer = new string(' ', (intCommandSpacer - strCommand.Length)); }
             //if (intChannelSpacer > strChannel.Length) { strChannelSpacer = new string(' ', (intChannelSpacer - strChannel.Length)); }
-            string strUserSpacer = (intUserSpacer > strUser.Length) ? new string(' ', (intUserSpacer - strUser.Length)) : "";
-            string strCommandSpacer = (intCommandSpacer > strCommand.Length) ? new string(' ', (intCommandSpacer - strCommand.Length)) : "";
+            string strUserSpacer = (intUserSpacer > strUser.Length) ? new string(' ', (intUserSpacer - strUser.Length)) : " ";
+            string strCommandSpacer = (intCommandSpacer > strCommand.Length) ? new string(' ', (intCommandSpacer - strCommand.Length)) : " ";
             string strChannelSpacer = (intChannelSpacer > strChannel.Length) ? new string(' ', (intChannelSpacer - strChannel.Length)) : "";
 
 

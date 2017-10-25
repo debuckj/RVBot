@@ -52,6 +52,11 @@ namespace WarframeNET
         [JsonProperty("expiry")]
         public DateTime EndTime { get; set; }
 
+        /// <summary>
+        /// Fissure eta.
+        /// </summary>
+        public string eta { get; set; }
+
         internal Fissure() { }
     }
 }

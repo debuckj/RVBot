@@ -41,6 +41,24 @@ namespace WarframeNET
         /// </summary>
         public List<VoidTraderItem> Inventory { get; set; }
 
+        /// <summary>
+        /// Location of the trader.
+        /// </summary>
+        public bool active { get; set; }
+
+        /// <summary>
+        /// Location of the trader.
+        /// </summary>
+        [JsonProperty("startString")]
+        public string etaStart { get; set; }
+
+        /// <summary>
+        /// Location of the trader.
+        /// </summary>
+        [JsonProperty("endString")]
+        public string etaLeave { get; set; }
+
+
         internal VoidTrader() { }
     }
 
