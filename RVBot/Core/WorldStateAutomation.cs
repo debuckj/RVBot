@@ -54,27 +54,25 @@ namespace RVBot.Core
         }
 
         public static async Task Populate(WorldState ws)
-        {
-
-
+        {     
             // populate news
             await Channel.ClearChannel(chanNews);
             await chanNews.SendMessageAsync("`This channel is automatically updated. To disable notifications, right-click the channel and enable mute`");
             await WorldStateObjects.DisplayNews(ws,chanNews);
 
+            // populate sorties
             await Channel.ClearChannel(chanSorties);
             await chanSorties.SendMessageAsync("`This channel is automatically updated. To disable notifications, right-click the channel and enable mute`");
             await WorldStateObjects.DisplaySorties(ws, chanSorties);
 
+            // populate fissures
             await Channel.ClearChannel(chanFissures);
             await chanFissures.SendMessageAsync("`This channel is automatically updated. To disable notifications, right-click the channel and enable mute`");
             await WorldStateObjects.DisplayFissures(ws, chanFissures);
 
 
 
-
         }
-
 
     }
 
