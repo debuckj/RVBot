@@ -7,7 +7,7 @@ using WarframeNET;
 
 namespace RVBot.Core
 {
-    public static class WorldStateAutomation
+    public static class WSAutomation
     {
         private static Task AutoBuildBackgroundTask;
         private static TimeSpan AutoBuildInterval = TimeSpan.FromMinutes(5);
@@ -16,9 +16,7 @@ namespace RVBot.Core
         private static string chanDefaultSorties = "sorties";
         private static string chanDefaultFissures = "fissures";
 
-        private static WSNewsStreamer streamerNews;
-
-
+ 
 
         public static IMessageChannel chanNews { get; set; }
         public static IMessageChannel chanSorties { get; set; }
@@ -40,14 +38,13 @@ namespace RVBot.Core
             chanFissures = await Channel.GetChannel(context, chanDefaultFissures);
         }
 
-
         public static async Task AutoBuildWSA(ICommandContext context, bool AutoBuild)
         {
             _bAutoBuild = AutoBuild;
-            await Log.LogMessage(context, bAutoBuild ? "AutoBuildDailies enabled" : "AutoBuildDailies disabled");
+            await Log.LogMessage(context, bAutoBuild ? "AutoBuildWSA enabled" : "AutoBuildWSA disabled");
 
             await Channel.ClearChannel(chanNews);
-            streamerNews = new WSNewsStreamer(chanNews);
+            WSNewsStreamer newsStreamer = new WSNewsStreamer(chanNews);
 
 
             AutoBuildBackgroundTask = Task.Run(async () =>
@@ -56,27 +53,26 @@ namespace RVBot.Core
                 {
                     WarframeClient wc = new WarframeClient();
                     WorldState ws = await wc.GetWorldStateAsync("pc/");
-                    //await Populate(ws);
 
-                    await streamerNews.Refresh(ws);
+                    await newsStreamer.Refresh(ws);
+                    await PopulateSorties(ws);
+                    await PopulateFissures(ws);
                     
                     await Task.Delay(AutoBuildInterval);
                 }
             });
         }
 
-        public static async Task Populate(WorldState ws)
-        {     
-            // populate news
-            await Channel.ClearChannel(chanNews);
-            await chanNews.SendMessageAsync("`This channel is automatically updated. To disable notifications, right-click the channel and enable mute`");
-            await WorldStateObjects.DisplayNews(ws,chanNews);
-
+        public static async Task PopulateSorties(WorldState ws)
+        {
             // populate sorties
             await Channel.ClearChannel(chanSorties);
             await chanSorties.SendMessageAsync("`This channel is automatically updated. To disable notifications, right-click the channel and enable mute`");
             await WorldStateObjects.DisplaySorties(ws, chanSorties);
+        }
 
+        public static async Task PopulateFissures(WorldState ws)
+        {
             // populate fissures
             await Channel.ClearChannel(chanFissures);
             await chanFissures.SendMessageAsync("`This channel is automatically updated. To disable notifications, right-click the channel and enable mute`");
