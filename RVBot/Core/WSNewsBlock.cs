@@ -13,10 +13,23 @@ namespace RVBot.Core
         public NewsArticle newsArticle { get; set; }
         public IMessage newsMessage { get; set; }
 
-        public WSNewsBlock()
-        { }
+        public WSNewsBlock(NewsArticle article, IMessage msg)
+        {
+            newsArticle = article;
+            newsMessage = msg;
+        }
 
-        public async Task Write(IMessageChannel channelNews, NewsArticle na)
+        /*
+
+        public async Task Write(NewsArticle na)
+        {
+
+
+            this.newsMessage = 
+        }
+
+
+        public async Task<IMessage> WriteNewsBlock(NewsArticle na)
         {
             EmbedBuilder eb = new EmbedBuilder();
             //eb.WithThumbnailUrl(na.ImageLink + "?width=80&height=80");
@@ -33,9 +46,10 @@ namespace RVBot.Core
             footer.WithText("Remnants of the Void");
             eb.WithFooter(footer);
             eb.WithTimestamp(new DateTimeOffset(DateTime.Now));
-            this.newsMessage = await channelNews.SendMessageAsync("", false, eb);        
+            return await channelNews.SendMessageAsync("", false, eb);
         }
 
+    */
 
     }
 

@@ -10,7 +10,7 @@ using WarframeNET;
 
 namespace RVBot.Modules
 {
-    public class WSAutomationModule : ModuleBase
+    public class WorldStateAutomationModule : ModuleBase
     {
         [Command("wsa_go")]
         [RequireContext(ContextType.Guild)]
@@ -18,8 +18,8 @@ namespace RVBot.Modules
         [Summary("Test ")]
         public async Task WSAGO(bool go)
         {
-            await WSAutomation.InitialiseWSA(Context);
-            await WSAutomation.AutoBuildWSA(Context, go);
+            await WorldStateAutomation.InitialiseWSA(Context);
+            await WorldStateAutomation.AutoBuildWSA(Context, go);
         }
 
 

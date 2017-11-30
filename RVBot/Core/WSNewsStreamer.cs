@@ -21,9 +21,9 @@ namespace RVBot.Core
 
         public async Task Refresh(WorldState ws)
         {
+            List<WSNewsBlock> markedForDelete = new List<WSNewsBlock>();
             List<NewsArticle> news = ws.WS_News;
             bool found;
-            List<IMessage> markedForDeleteMessages = new List<IMessage>();
 
             foreach (WSNewsBlock nb in cachedNews)
             {
@@ -35,15 +35,21 @@ namespace RVBot.Core
                     {
                         found = true;
                         news.Remove(na);
-                        break;
                     }
                 }
 
                 if (!found)
                 {
-                    markedForDeleteMessages.Add(nb.newsMessage);
+                    markedForDelete.Add(nb);
                     cachedNews.Remove(nb);
                 }
+            }
+
+            List<IMessage> markedForDeleteMessages = new List<IMessage>();
+
+            foreach (WSNewsBlock nb in markedForDelete)
+            {
+                markedForDeleteMessages.Add(nb.newsMessage);
             }
 
             // delete outdated messages
@@ -51,10 +57,31 @@ namespace RVBot.Core
 
             foreach (NewsArticle na in news)
             {
-                WSNewsBlock wsnb = new WSNewsBlock();
-                cachedNews.Add(wsnb);
-                await wsnb.Write(channelNews, na);
+                IMessage message = await WriteNewsBlock(na);
+                cachedNews.Add(new WSNewsBlock(na, message));
             }
         }
+
+
+        public async Task<IMessage> WriteNewsBlock(NewsArticle na)
+        {
+            EmbedBuilder eb = new EmbedBuilder();
+            //eb.WithThumbnailUrl(na.ImageLink + "?width=80&height=80");
+            eb.WithTitle(String.Format("{0} - {1} ago", na.Message, na.FormattedEta()));
+            eb.WithDescription(na.Link);
+
+            //eb.AddInlineField("Link", na.Link);
+            //eb.AddInlineField("eta", na.ETA);
+            eb.WithImageUrl(na.ImageLink);
+            eb.WithColor(Color.Red);
+
+            EmbedFooterBuilder footer = new EmbedFooterBuilder();
+            footer.WithIconUrl("https://images-ext-1.discordapp.net/external/hAQVdE0EHRmMzbb965tL65KqD4wHXwj82tiI0C0_Mac/%3Fsize%3D128/https/cdn.discordapp.com/icons/166488311458824193/96a7f1b793bdf524165b0f5f62d32126.png?width=80&height=80");
+            footer.WithText("Remnants of the Void");
+            eb.WithFooter(footer);
+            eb.WithTimestamp(new DateTimeOffset(DateTime.Now));
+            return await channelNews.SendMessageAsync("", false, eb);
+        }
+
     }
 }
