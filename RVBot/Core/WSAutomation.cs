@@ -68,7 +68,7 @@ namespace RVBot.Core
             // populate sorties
             await Channel.ClearChannel(chanSorties);
             await chanSorties.SendMessageAsync("`This channel is automatically updated. To disable notifications, right-click the channel and enable mute`");
-            await WSObjects.DisplaySorties(ws, chanSorties);
+            await WorldStateObjects.DisplaySorties(ws, chanSorties);
         }
 
         public static async Task PopulateFissures(WorldState ws)
@@ -76,7 +76,7 @@ namespace RVBot.Core
             // populate fissures
             await Channel.ClearChannel(chanFissures);
             await chanFissures.SendMessageAsync("`This channel is automatically updated. To disable notifications, right-click the channel and enable mute`");
-            await WSObjects.DisplayFissures(ws, chanFissures);
+            await WorldStateObjects.DisplayFissures(ws, chanFissures);
 
 
         }

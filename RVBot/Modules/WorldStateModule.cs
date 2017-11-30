@@ -39,11 +39,6 @@ namespace RVBot.Modules
             eb.WithTitle("Plains of Eidolon / Cetus cycle info");
             eb.WithDescription(output);
             eb.WithColor(Color.Red);
-            EmbedFooterBuilder footer = new EmbedFooterBuilder();
-            footer.WithIconUrl("https://images-ext-1.discordapp.net/external/hAQVdE0EHRmMzbb965tL65KqD4wHXwj82tiI0C0_Mac/%3Fsize%3D128/https/cdn.discordapp.com/icons/166488311458824193/96a7f1b793bdf524165b0f5f62d32126.png?width=80&height=80");
-            footer.WithText("Remnants of the Void");
-            eb.WithFooter(footer);
-            eb.WithTimestamp(new DateTimeOffset(DateTime.Now));
             await Context.Channel.SendMessageAsync("", false, eb);
         }
 
@@ -65,17 +60,12 @@ namespace RVBot.Modules
             eb.WithTitle("Earth cycle info");
             eb.WithDescription(output);
             eb.WithColor(Color.Red);
-            EmbedFooterBuilder footer = new EmbedFooterBuilder();
-            footer.WithIconUrl("https://images-ext-1.discordapp.net/external/hAQVdE0EHRmMzbb965tL65KqD4wHXwj82tiI0C0_Mac/%3Fsize%3D128/https/cdn.discordapp.com/icons/166488311458824193/96a7f1b793bdf524165b0f5f62d32126.png?width=80&height=80");
-            footer.WithText("Remnants of the Void");
-            eb.WithFooter(footer);
-            eb.WithTimestamp(new DateTimeOffset(DateTime.Now));
             await Context.Channel.SendMessageAsync("", false, eb);
         }
 
-        [Command("baro")]
+        [Command("baro"), Summary("")]
         [RequireContext(ContextType.Guild)]
-        //[RequireUserPermission(GuildPermission.Administrator)]
+        [RequireUserPermission(GuildPermission.Administrator)]
         public async Task x(string channelname = null)
         {
             EmbedBuilder eb = new EmbedBuilder();
@@ -113,11 +103,6 @@ namespace RVBot.Modules
             eb.WithTitle("Baro info");
             eb.WithDescription(output);
             eb.WithColor(Color.Red);
-            EmbedFooterBuilder footer = new EmbedFooterBuilder();
-            footer.WithIconUrl("https://images-ext-1.discordapp.net/external/hAQVdE0EHRmMzbb965tL65KqD4wHXwj82tiI0C0_Mac/%3Fsize%3D128/https/cdn.discordapp.com/icons/166488311458824193/96a7f1b793bdf524165b0f5f62d32126.png?width=80&height=80");
-            footer.WithText("Remnants of the Void");
-            eb.WithFooter(footer);
-            eb.WithTimestamp(new DateTimeOffset(DateTime.Now));
             await Context.Channel.SendMessageAsync("", false, eb);
         }
 
@@ -140,6 +125,41 @@ namespace RVBot.Modules
             await Context.Channel.SendMessageAsync(String.Format("worldstatefile updated at : {0}", dt.ToString()));
         }
 
+        [Command("ws_cetus")]
+        [RequireContext(ContextType.Guild)]
+        //[RequireUserPermission(GuildPermission.Administrator)]
+        [Summary("Test ")]
+        public async Task WS_Cetus()
+        {
+            WarframeClient wc = new WarframeClient();
+            CetusCycle cc = await wc.GetCetuscycleAsync("pc/");
+
+            string output = String.Format("It's currently {0} in Cetus for another {1}", cc.TimeOfDay(), cc.timeLeft);
+
+
+
+            await Context.Channel.SendMessageAsync(output);
+        }
+
+
+        [Command("ws_ostrons")]
+        [RequireContext(ContextType.Guild)]
+        //[RequireUserPermission(GuildPermission.Administrator)]
+        [Summary("Test ")]
+        public async Task WS_Ostrons()
+        {
+            WarframeClient wc = new WarframeClient();
+            List<SyndicateMission> missions = await wc.GetSyndicateMissionsAsync("pc/");
+
+            SyndicateMission mission = missions.FirstOrDefault(x => x.Syndicate.Equals("Ostrons"));
+
+            if (mission != null)
+            {
+                await Context.Channel.SendMessageAsync(String.Format("Ostrons reset in {0}", mission.eta));
+            }
+        }
+
+
 
 
 
@@ -151,7 +171,7 @@ namespace RVBot.Modules
         {
             WarframeClient wc = new WarframeClient();
             WorldState ws = await wc.GetWorldStateAsync("pc/");
-            await WSObjects.DisplaySorties(ws, Context.Channel);
+            await WorldStateObjects.DisplaySorties(ws, Context.Channel);
         }
 
         [Command("ws_news")]
@@ -162,7 +182,7 @@ namespace RVBot.Modules
         {
             WarframeClient wc = new WarframeClient();
             WorldState ws = await wc.GetWorldStateAsync("pc/");
-            await WSObjects.DisplayNews(ws, Context.Channel);
+            await WorldStateObjects.DisplayNews(ws, Context.Channel);
         }
 
         [Command("ws_fissures")]
@@ -173,7 +193,7 @@ namespace RVBot.Modules
         {
             WarframeClient wc = new WarframeClient();
             WorldState ws = await wc.GetWorldStateAsync("pc/");
-            await WSObjects.DisplayFissures(ws, Context.Channel);
+            await WorldStateObjects.DisplayFissures(ws, Context.Channel);
         }
 
 
