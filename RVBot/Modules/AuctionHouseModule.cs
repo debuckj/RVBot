@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace RVBot.Modules
 {
+    /*
     public class AuctionHouseModule : ModuleBase
     {
         public AuctionHouseModule()
@@ -50,4 +51,5 @@ namespace RVBot.Modules
 
 
     }
+    */
 }

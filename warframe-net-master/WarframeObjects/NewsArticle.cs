@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 
 namespace WarframeNET
 {
@@ -44,6 +45,14 @@ namespace WarframeNET
         /// Link to an image if any.
         /// </summary>
         public string ImageLink { get; set; }
+
+        /// <summary>
+        /// Link to an image if any.
+        /// </summary>
+        public List<string> Translations { get; set; }
+
+
+
 
         public string FormattedEta()
         {

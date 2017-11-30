@@ -111,6 +111,16 @@ namespace RVBot.Modules
             await Context.Channel.SendFileAsync("Content/Images/hawki.jpg");
         }
 
+        [Command("beast")]
+        //[Alias("dizzy")]
+        [RequireContext(ContextType.Guild)]
+        [Summary("Get a hawki. ")]
+        public async Task ShowBeast()
+        {
+            await Log.LogMessage(Context);
+            await Context.Channel.SendFileAsync("Content/Images/beast.png");
+        }
+
         [Command("ohshit")]
         //[Alias("dizzy")]
         [RequireContext(ContextType.Guild)]
