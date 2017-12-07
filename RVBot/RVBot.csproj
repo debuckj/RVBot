@@ -23,6 +23,214 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Content\ImagesCats\airplane.jpg" />
+    <None Remove="Content\ImagesCats\cuddles.jpg" />
+    <None Remove="Content\ImagesCats\dan.jpg" />
+    <None Remove="Content\ImagesCats\dizzy.jpg" />
+    <None Remove="Content\ImagesCats\guards.jpg" />
+    <None Remove="Content\ImagesCats\help.jpg" />
+    <None Remove="Content\ImagesCats\horse.jpg" />
+    <None Remove="Content\ImagesCats\idareyou.jpg" />
+    <None Remove="Content\ImagesCats\images.jpg" />
+    <None Remove="Content\ImagesCats\nevergofullretard.jpg" />
+    <None Remove="Content\ImagesCats\poland.jpg" />
+    <None Remove="Content\ImagesCats\spidercat.jpg" />
+    <None Remove="Content\ImagesCats\tank.jpg" />
+    <None Remove="Content\ImagesCats\teamwork.jpg" />
+    <None Remove="Content\ImagesCats\terrified.jpg" />
+    <None Remove="Content\ImagesCats\untitled1.jpg" />
+    <None Remove="Content\ImagesCats\untitled2.jpg" />
+    <None Remove="Content\ImagesCats\untitled3.jpg" />
+    <None Remove="Content\ImagesCats\untitled4.jpg" />
+    <None Remove="Content\ImagesCats\untitled5.jpg" />
+    <None Remove="Content\ImagesCats\wasntme.jpg" />
+    <None Remove="Content\ImagesCats\why.jpg" />
+    <None Remove="Content\ImagesDogs\woof %281%29.jpg" />
+    <None Remove="Content\ImagesDogs\woof %2810%29.jpg" />
+    <None Remove="Content\ImagesDogs\woof %2811%29.jpg" />
+    <None Remove="Content\ImagesDogs\woof %2812%29.jpg" />
+    <None Remove="Content\ImagesDogs\woof %2813%29.jpg" />
+    <None Remove="Content\ImagesDogs\woof %282%29.jpg" />
+    <None Remove="Content\ImagesDogs\woof %283%29.jpg" />
+    <None Remove="Content\ImagesDogs\woof %284%29.jpg" />
+    <None Remove="Content\ImagesDogs\woof %285%29.jpg" />
+    <None Remove="Content\ImagesDogs\woof %286%29.jpg" />
+    <None Remove="Content\ImagesDogs\woof %287%29.jpg" />
+    <None Remove="Content\ImagesDogs\woof %288%29.jpg" />
+    <None Remove="Content\ImagesDogs\woof %289%29.jpg" />
+    <None Remove="Content\Images\BAN.gif" />
+    <None Remove="Content\Images\BAN2.gif" />
+    <None Remove="Content\Images\DIZZY.gif" />
+    <None Remove="Content\Images\dizzy.jpg" />
+    <None Remove="Content\Images\DRACO.gif" />
+    <None Remove="Content\Images\hawki.jpg" />
+    <None Remove="Content\Images\KICK.gif" />
+    <None Remove="Content\Images\kick_original.gif" />
+    <None Remove="Content\Images\maniac.jpg" />
+    <None Remove="Content\Images\RAIDTIME.jpg" />
+    <None Remove="Content\Images\VOLT.jpeg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Content\ImagesCats\airplane.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ImagesCats\cuddles.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ImagesCats\dan.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ImagesCats\dizzy.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ImagesCats\guards.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ImagesCats\help.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ImagesCats\horse.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ImagesCats\idareyou.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ImagesCats\images.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ImagesCats\nevergofullretard.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ImagesCats\poland.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ImagesCats\spidercat.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ImagesCats\tank.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ImagesCats\teamwork.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ImagesCats\terrified.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ImagesCats\untitled1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ImagesCats\untitled2.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ImagesCats\untitled3.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ImagesCats\untitled4.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ImagesCats\untitled5.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ImagesCats\wasntme.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ImagesCats\why.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\ImagesDogs\woof (1).jpg" />
+    <Content Include="Content\ImagesDogs\woof (10).jpg" />
+    <Content Include="Content\ImagesDogs\woof (11).jpg" />
+    <Content Include="Content\ImagesDogs\woof (12).jpg" />
+    <Content Include="Content\ImagesDogs\woof (13).jpg" />
+    <Content Include="Content\ImagesDogs\woof (2).jpg" />
+    <Content Include="Content\ImagesDogs\woof (3).jpg" />
+    <Content Include="Content\ImagesDogs\woof (4).jpg" />
+    <Content Include="Content\ImagesDogs\woof (5).jpg" />
+    <Content Include="Content\ImagesDogs\woof (6).jpg" />
+    <Content Include="Content\ImagesDogs\woof (7).jpg" />
+    <Content Include="Content\ImagesDogs\woof (8).jpg" />
+    <Content Include="Content\ImagesDogs\woof (9).jpg" />
+    <Content Include="Content\Images\BAN.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\DIZZY.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\dizzy.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\DRACO.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\hawki.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\KICK.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\kick_original.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\maniac.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\RAIDTIME.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\VOLT.jpeg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <Content Update="Content\ImagesDogs\woof %281%29.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Content\ImagesDogs\woof %2810%29.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Content\ImagesDogs\woof %2811%29.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Content\ImagesDogs\woof %2812%29.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Content\ImagesDogs\woof %2813%29.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Content\ImagesDogs\woof %282%29.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Content\ImagesDogs\woof %283%29.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Content\ImagesDogs\woof %284%29.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Content\ImagesDogs\woof %285%29.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Content\ImagesDogs\woof %286%29.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Content\ImagesDogs\woof %287%29.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Content\ImagesDogs\woof %288%29.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Content\ImagesDogs\woof %289%29.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Content\Images\BAN.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
     </None>
