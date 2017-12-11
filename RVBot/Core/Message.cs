@@ -11,7 +11,7 @@ namespace RVBot.Core
 {
     public static class Message
     {
-        private static string EmojiWhitespace = "<:whitespace:298909396644265984>";
+        private static string EmojiWhitespace = "<:whitespace:289817622080651264>";
         private static string EmojiExclamation = ":exclamation:";
         private static string DefaultHeaderRed = String.Format("{0}{1}{2}", EmojiWhitespace, EmojiExclamation, EmojiWhitespace);
         private static string DefaultHeaderGrey = ":whitespace::grey_exclamation::whitespace:";
